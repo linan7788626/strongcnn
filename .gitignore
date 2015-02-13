@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# junk
+core.*
+
+# vimvim
+*.swp
+*.swo
+*.swn
+*.swm
+.*.sw*
+
+# latex
+*.pdf
+*.bcf
+*.aux
+*.out
+*.synctex.gz
+*.xml
+
+# C extensions
+*.so
+
+# some other stuff
+.cache/
+images
+swap_pickles
