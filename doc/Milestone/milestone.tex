@@ -21,7 +21,7 @@
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 %\ifcvprfinal\pagestyle{empty}\fi
-\setcounter{page}{4321}
+\setcounter{page}{1}
 \begin{document}
 
 %%%%%%%%% TITLE
@@ -101,20 +101,56 @@ team of ten graduate students could expect to spend about 14 years looking at
 these objects. Computer algorithms are not much better: most current machine
 learning algorithms are woefully-underpowered for this task, and generally have
 poor completeness or poor purity -- and often poor both. Additionally, some
-algorithms are better at finding some types of lenses than others -- some
+algorithms are better at finding some types of lenses than others; some
 perform well on the brilliant arcs, but poorly on the multiply-imaged objects,
 or vice versa. New algorithms need to be developed to find more strong
 gravitational lenses, and more strong lenses need to be found to power these
 algorithms.
 
-{\sc Space\,Warps}\xspace is a citizen-science initiative designed to overcome
-these two problems. The program has users examine images from the
-Canada-France-Hawaii Telescope Legacy Survey (CFHTLS) and vote on where they
-see lenses. Users are also assessed and trained with simulated lenses and known
-empty fields. By having thousands of users analyze a survey for short amounts
-of time each, it is hoped that a more complete sample of lenses can be
-discovered, which can then be fed into lens-finding algorithms to further
-improve their performance.
+{\sc Space\,Warps}\xspace (Marshall et. al, in prep.) is a citizen-science
+initiative designed to overcome these two problems. The program has users
+examine images from the Canada-France-Hawaii Telescope Legacy Survey (CFHTLS)
+and vote on where they see lenses. Users are also assessed and trained with
+simulated lenses and known empty fields. By having thousands of users analyze a
+survey for short amounts of time each, it is hoped that a more complete sample
+of lenses can be discovered, which can then be fed into lens-finding algorithms
+to further improve their performance.
+
+\begin{figure*}[!ht]
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/0.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/1.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/2.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/3.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+  \caption{Typical Space Warps duds. Insets indicate regions where volunteers typically
+  clicked.}
+  \label{fig:duds}
+\end{figure*}
+
+\begin{figure*}[!ht]
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/4.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/5.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/6.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=figs/gallery/7.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+  \caption{Typical sims. Insets indicate the location of the lens in the
+  image.}
+  \label{fig:sims}
+\end{figure*}
 
 %-------------------------------------------------------------------------
 \section{Problem Statement}
@@ -147,6 +183,7 @@ We would like to examine the following questions:
      noise')?}
 \end{itemize}
 
+
 %-------------------------------------------------------------------------
 \section{Technical Approach}
 
@@ -168,21 +205,33 @@ reasonable definitions of completeness and purity.) For all the images we also
 have an associated probability that the project would evaluate that system as
 containing a lens.
 
-We plan to train a classifier on this data using two different methods. First, we will code 
-our own convolutional net in python using theano. Second, we will apply transfer learning 
-techniques to train on a convolutional net galaxy morphology classifier, which has graciously 
-been made available to us by Ryan Keisler and which achieved 7th place in the 2014 Galaxy 
-Zoo Kaggle competition. This classifier runs $96\times96$ images through 3 convolutional 
-layers and 2 fully-connected layers and predicts a galaxy to have one of 37 enumerated 
-morphologies. We plan to train our classifier on top of the first full-connected layer, which 
-has 500 neurons. 
+It is clear that we do not have enough data. Luckily, we also know that our
+lens objects must obey certain symmetry properties, so it is quite easy to
+augment our data. For example, we know that strong lens systems should be
+independent of rotations as well as small amounts of stretching and
+translation, so our data can be augmented by applying those transformations to
+our images.
+
+We plan to train a classifier on this data using two different methods. First,
+we will code our own convolutional net in python using theano. Second, we will
+apply transfer learning techniques to train on a convolutional net galaxy
+morphology classifier, which has graciously been made available to us by Ryan
+Keisler and which achieved 7th place in the 2014 Galaxy Zoo Kaggle competition.
+This classifier runs $96\times96$ images through 3 convolutional layers and 2
+fully-connected layers and predicts a galaxy to have one of 37 enumerated
+morphologies. We plan to train our classifier on top of the first
+fully-connected layer, which has 500 neurons.
+
 
 %-------------------------------------------------------------------------
 \section{Intermediate/Preliminary Results}
 
-We have begun constructing our own convolutional network with two convolutional/max-pool 
-layers and two fully-connected layers. Although we have not yet trained on our lensing images,
-we can load these images and run them through our initialized classifier.
+We have created the cutouts of our images from the catalogs.
+We have begun constructing our own convolutional network with two
+convolutional/max-pool layers and two fully-connected layers. Although we have
+not yet trained on our images, we can load these images and run them
+through our initialized classifier. Figures~\ref{fig:duds} and
+\ref{fig:sims}\xspace show example fields with cutouts inlaid.
 
 % {\small
 % \bibliographystyle{ieee}
