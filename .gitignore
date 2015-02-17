@@ -27,3 +27,4 @@ core.*
 .cache/
 images
 swap_pickles
+notebooks/.ipynb_checkpoints/*

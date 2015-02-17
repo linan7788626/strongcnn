@@ -1,0 +1,110 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{4321}
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Recognizing Strong Gravitational Lenses}
+
+\author{Chris Davis\\
+{\tt\small cpd@stanford.edu}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Andrew McLeod\\
+{\tt\small ajmcleod@stanford.edu}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+% %%%%%%%%% ABSTRACT
+% \begin{abstract}
+%    The ABSTRACT is to be in fully-justified italicized text, at the top
+%    of the left-hand column, below the author and affiliation
+%    information. Use the word ``Abstract'' as the title, in 12-point
+%    Times, boldface type, centered relative to the column, initially
+%    capitalized. The abstract is to be in 10-point, single-spaced type.
+%    Leave two blank lines after the Abstract, then begin the main text.
+%    Look at previous CVPR abstracts to get a feel for style and length.
+% \end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+
+A consequence of Einstein's Theory of General Relativity is that mass bends the
+path of light. When light passes through a particularly deep gravitational
+potential, the deflections, called strong gravitational lenses, can produce
+brilliant arcs and multiple images. The number and distribution of strong
+lenses reflect the expansion history of the universe.
+
+%-------------------------------------------------------------------------
+\section{Problem Statement}
+
+In this project we will use images collected by the Canada-France-Hawaii
+Telescope Legacy Survey to analyze how Convolution Neural Networks can improve
+automated detection of strong lens systems. From other graduate work (but not
+coursework), we have the locations and categories of around one hundred and
+twenty known strong lenses, three thousand large fields verified to contain no
+strong lenses, six thousand simulated strong lenses, and several thousand
+classifications by citizen-scientists of other potential strong lens systems.
+These will form the core of our training and testing datasets; our metric will
+be how well a CNN correctly identifies known and simulated lenses and non-lens
+systems.
+
+We would like to examine the following questions:
+\begin{itemize}
+\item{ Do we have enough data to reasonably train and test a CNN? Can we get
+       around this by artificially inflating the data, e.g. by adding rotated
+     images?}
+\item{ What processing needs to be done on the data? What kind of scaling of
+       pixel data is appropriate for automated detection? Should we compress
+     the five different 'colors' to a smaller number of dimensions?}
+   \item{ How do citizen-scientists do compared with this automated system?}
+   \item{Can we use the results of citizen-scientists to train the CNN?}
+\item{What sets of classifications are needed? Are we better served sticking
+       to 'lens' and 'not lens', or should we use several classification
+       categories ('lensed arcs', 'lensed multiple images', 'non-lens pixel
+     noise')?}
+\end{itemize}
+
+%-------------------------------------------------------------------------
+\section{Technical Approach}
+
+From approximately 12000 fields of $440\times440\times3$ fields, we have
+constructed ______ cutouts sized $96\times96\times3$. We 
+
+%-------------------------------------------------------------------------
+\section{Intermediate/Preliminary Results}
+
+
+% {\small
+% \bibliographystyle{ieee}
+% \bibliography{egbib}
+% }
+
+\end{document}
