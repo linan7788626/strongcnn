@@ -96,11 +96,24 @@ We would like to examine the following questions:
 \section{Technical Approach}
 
 From approximately 12000 fields of $440\times440\times3$ fields, we have
-constructed ______ cutouts sized $96\times96\times3$. We 
+constructed <> cutouts sized $96\times96\times3$. These cutouts 
+
+
+We plan to train a classifier on this data using two different methods. First, we will code 
+our own convolutional net in python using theano. Second, we will apply transfer learning 
+techniques to train on a convolutional net galaxy morphology classifier, which has graciously 
+been made available to us by Ryan Keisler and which achieved 7th place in the 2014 Galaxy 
+Zoo Kaggle competition. This classifier runs $96\times96$ images through 3 convolutional 
+layers and 2 fully-connected layers and predicts a galaxy to have one of 37 enumerated 
+morphologies. We plan to train our classifier on top of the first full-connected layer, which 
+has 500 neurons. 
 
 %-------------------------------------------------------------------------
 \section{Intermediate/Preliminary Results}
 
+We have begun constructing our own convolutional network with two convolutional/max-pool 
+layers and two fully-connected layers. Although we have not yet trained on our lensing images,
+we can load these images and run them through our initialized classifier.
 
 % {\small
 % \bibliographystyle{ieee}
