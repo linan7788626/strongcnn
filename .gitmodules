@@ -1,0 +1,3 @@
+[submodule "galzoo"]
+	path = galzoo
+	url = https://github.com/rkeisler/galzoo

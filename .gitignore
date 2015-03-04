@@ -28,3 +28,4 @@ core.*
 images
 swap_pickles
 notebooks/.ipynb_checkpoints/*
+.ipynb_checkpoints
