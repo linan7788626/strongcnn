@@ -41,7 +41,7 @@ def make_convnet_batches_test(simple_ds, mask_strength, savepath):
             galids.append(this_galid)
         output = {'data':data, 'labels':labels, 'filenames':filenames,
                   'galids':galids}
-        pickle.dump(output, open(savepath+'data_batch_%i'%(100+ibatch), 'w'))
+        pickle.dump(output, open(savepath+'data_batch_%i'%(900+ibatch), 'w'))
 
 
 
@@ -121,15 +121,15 @@ def file2galid(file):
     return int(file.split('/')[-1].split('_')[0])
 
 
-def do_preprocessing(savepath_base):
+def do_preprocessing(savepath):
     from os import makedirs, path
-    for simple_ds in [None, 2, 3, 4]:
-        for mask_strength in [None, 'weak', 'strong']:
-            savepath = savepath_base + '{0}_{1}/'.format(simple_ds, mask_strength)
-            if not path.exists(savepath):
-                makedirs(savepath)
-            print(simple_ds, mask_strength, savepath)
-            make_convnet_batches_test(simple_ds, mask_strength, savepath)
+
+    simple_ds = 4
+    mask_strength = None
+    if not path.exists(savepath):
+        makedirs(savepath)
+    print(simple_ds, mask_strength, savepath)
+    make_convnet_batches_test(simple_ds, mask_strength, savepath)
 
 if __name__ == '__main__':
     savepath = '/farmshare/user_data/cpd/spacewarp_batches/conv_output/'
