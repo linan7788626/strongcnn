@@ -17,9 +17,6 @@ datapath = '/farmshare/user_data/cpd/spacewarp_batches/cutouts_good/'
 n_files_per_batch = 10263
 n_batches_test = 9
 
-output_directory = '/farmshare/user_data/cpd/spacewarp_batches/conv_output'
-
-
 def make_convnet_batches_test(simple_ds, mask_strength, savepath):
     n_batches = n_batches_test
     from os import system
@@ -119,3 +116,15 @@ def get_mask(img, thresh=25):
 
 def file2galid(file):
     return int(file.split('/')[-1].split('.')[0])
+
+
+def do_preprocessing(savepath_base):
+    for simple_ds in [None, 2, 3, 4]:
+        for mask_strength in [None, 'weak', 'strong']:
+            savepath = savepath_base + '{0}_{1}/'.format(simple_ds, mask_strength)
+            print(simple_ds, mask_strength, savepath)
+            make_convnet_batches_test(simple_ds, mask_strength, savepath)
+
+if __name__ == '__main__':
+    savepath = '/farmshare/user_data/cpd/spacewarp_batches/conv_output/'
+    do_preprocessing(savepath)
