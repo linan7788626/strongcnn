@@ -126,7 +126,7 @@ def file2galid(file):
 def do_preprocessing(savepath):
     from os import makedirs, path
 
-    simple_ds = 4
+    simple_ds = None  # no downsampling for me!
     mask_strength = None
     if not path.exists(savepath):
         makedirs(savepath)
