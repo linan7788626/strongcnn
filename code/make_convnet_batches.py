@@ -47,7 +47,7 @@ def make_convnet_batches_test(simple_ds, mask_strength, savepath):
 
 def preprocess3band_convnet(filename, simple_ds=3., mask_strength=None):
     from PIL import Image
-    from skimage.filter import gaussian_filter
+    from skimage.filters import gaussian_filter
     # open file
     x=np.array(Image.open(filename), dtype=np.float)
 
@@ -107,7 +107,7 @@ def preprocess3band_convnet(filename, simple_ds=3., mask_strength=None):
 
 def get_mask(img, thresh=25):
     # add color cut in here?
-    from skimage.filter import gaussian_filter
+    from skimage.filters import gaussian_filter
     from scipy import ndimage
     (nx,ny)=img.shape
     sm = gaussian_filter(img, 4.0)
@@ -122,9 +122,12 @@ def file2galid(file):
 
 
 def do_preprocessing(savepath_base):
+    from os import makedirs, path
     for simple_ds in [None, 2, 3, 4]:
         for mask_strength in [None, 'weak', 'strong']:
             savepath = savepath_base + '{0}_{1}/'.format(simple_ds, mask_strength)
+            if not path.exists(savepath):
+                makedirs(savepath)
             print(simple_ds, mask_strength, savepath)
             make_convnet_batches_test(simple_ds, mask_strength, savepath)
 
