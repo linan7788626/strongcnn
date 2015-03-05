@@ -32,6 +32,8 @@ def make_convnet_batches_test(simple_ds, mask_strength, savepath):
         ind_min = ibatch*n_files_per_batch
         ind_max = np.min([(ibatch+1)*n_files_per_batch, len(files)])
         filenames = files[ind_min:ind_max]
+        if len(filenames) == 0:
+            break
         galids = []
         print(ibatch,n_batches)
         for ifile,file in enumerate(filenames):
