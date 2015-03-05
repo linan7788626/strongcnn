@@ -115,7 +115,7 @@ def get_mask(img, thresh=25):
     return mask
 
 def file2galid(file):
-    return int(file.split('/')[-1].split('.')[0])
+    return int(file.split('/')[-1].split('_')[0])
 
 
 def do_preprocessing(savepath_base):
