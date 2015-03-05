@@ -32,12 +32,15 @@ def make_convnet_batches_test(simple_ds, mask_strength, savepath):
         ind_min = ibatch*n_files_per_batch
         ind_max = np.min([(ibatch+1)*n_files_per_batch, len(files)])
         filenames = files[ind_min:ind_max]
-        print ibatch,n_batches
+        galids = []
+        print(ibatch,n_batches)
         for ifile,file in enumerate(filenames):
-            if (ifile%100)==0: print ifile,n_files_per_batch
+            if (ifile%100)==0: print(ifile,n_files_per_batch)
             data[:, ifile] = preprocess3band_convnet(file, simple_ds=simple_ds, mask_strength=mask_strength).T.ravel()
             this_galid = file2galid(file)
-        output = {'data':data, 'labels':labels, 'filenames':filenames}
+            galids.append(this_galid)
+        output = {'data':data, 'labels':labels, 'filenames':filenames,
+                  'galids':galids}
         pickle.dump(output, open(savepath+'data_batch_%i'%(100+ibatch), 'w'))
 
 
