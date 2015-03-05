@@ -22,7 +22,7 @@ def make_convnet_batches_test(simple_ds, mask_strength, savepath):
     from os import system
     from glob import glob
     from PIL import Image
-    files = sorted(glob(datapath+'images_test_rev1/*.jpg'))
+    files = sorted(glob(datapath+'*.png'))
     dummy_labels = np.zeros(37)-1.
     labels = [dummy_labels for i in range(n_files_per_batch)]    
     nside = preprocess3band_convnet(files[0], simple_ds=simple_ds, mask_strength=mask_strength).shape[0]
