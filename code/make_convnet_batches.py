@@ -134,5 +134,5 @@ def do_preprocessing(savepath):
     make_convnet_batches_test(simple_ds, mask_strength, savepath)
 
 if __name__ == '__main__':
-    savepath = '/farmshare/user_data/cpd/spacewarp_batches/conv_output/'
+    savepath = '/farmshare/user_data/cpd/spacewarp_batches/'
     do_preprocessing(savepath)
