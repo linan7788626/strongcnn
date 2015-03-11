@@ -20,42 +20,44 @@
 
 \title{Recognizing Strong Gravitational Lenses}
 \author{Chris Davis and Andrew McLeod}
-\email{cpd@stanford.edu}
+\email{cpd@stanford.edu 
+ajmcleod@stanford.edu}
 %\homepage{http://radlab.cs.berkeley.edu/}
 \makeposter
 
 \section{Strong Gravitational Lenses}
-
 \epsfigure[40]{Figures/lens.png}{Example
 strong gravitational lens discovered by \textsc{Space Warps}.}
-
 \begin{itemize}
-\item{Strong lenses -- systems with possibly multiple magnified and
+\item{Strong lenses -- systems with magnified and
 distorted images of background objects (sources) due to the deflection of light
 by massive foreground objects (lenses) -- can be used as astrophysical tools to
 probe mass distributions, magnify distant objects, and measure fundamental
-cosmological parameters.
-\item{The main problem with strong gravitational lenses is their rarity:
+cosmological parameters.}
+\item{The main problem with strong gravitational lenses is their rarity:}
   \begin{itemize}
     \item{For
 modern wide-field optical surveys which observe tens of millions of galaxies
 over many thousand square degrees, one expects to find only several hundred
-such systems.} \item{While strong lenses
+such systems.} 
+\item{While strong lenses
 are relatively easy to spot by eye, machine learning techniques have thus far
 been unsuccessful in reliably identifying strong lenses and distinguishing them from
-image artifacts (e.g. cosmic rays) and other false positives (e.g. pixel
-noise). Maybe CNNs will help!}
-\end{itemize}}
+image artifacts (e.g. cosmic rays) and other false positives. Maybe CNNs will help!}
 \end{itemize}
+\end{itemize}
+
+
+
+%%% second pane
+
 \epsfigure[90]{Figures/sims.png}{Example fields (with cutouts in corner)
 containing simulated lenses.}
 
 \epsfigure[90]{Figures/duds.png}{Example fields (with cutouts in corner)
 containing no lenses. Cutouts indicate regions used as inputs for `duds'.}
 
-
 \section{Space Warps Dataset}
-
 \begin{itemize}
   \item{\textsc{Space Warps} (\url{www.spacewarps.com}) is an online crowd-sourced gravitational
     lens detection system that invites citizen
@@ -63,7 +65,7 @@ scientists to interpret real data from the Canada-France-Hawaii Telescope
 Legacy Survey.}
 \item{Volunteers also analyze artificial ``training'' images of simulated
     lenses as well as images confirmed to have no strong gravitational lenses.
-    Simulated lenses are also further demarcated by lens type (lensed quasar,
+    Simulated lenses are further demarcated by lens type (lensed quasar,
   lensing galaxy, lensing cluster), each of which has different potential
 cosmological applications.}
 \item{\textsc{Space Warps} is divided into two stages, where the second stage
@@ -71,20 +73,19 @@ cosmological applications.}
   training images. There are 24177 training images in Stage 1 and 1876 in Stage
 2. We also have 9030 ``test'' images (cutouts whose status is not known but for
 which we are interested in making reasonable guesses).}
-\item{\textsc{Space Warps} will provide a ``curated'' dataset of gravitational
-  lenses and lens-look-alikes to facilitate the training of future automated detection
+\item{\textsc{Space Warps} will provide a curated dataset of gravitational
+  lenses and lens look-alikes to facilitate the training of future automated detection
 algorithms.}
 \item{We train our networks on the ``training'' images only, of which there are
   20743 ``duds'' and 5310 ``sims''. From fields of 440 x 440 x 3, we cut
-  out 96 x 96 x 3 stamps based on the locations \textsc{Space Warps}
-users clicked.}
+  out 96 x 96 x 3 stamps based on \textsc{Space Warps} inputs.}
 \end{itemize}
 
 
-\section{Our Own CNN}
+%%% third pane
 
 
-\section{Transfer Learning with Galaxy Morphology}
+\section{Transfer Learning with Galaxy Zoo}
 
 %\epsfigure[40]{Figures/architecture.pdf}{Architecture of the convolution
 %  neural network trained on the galaxy zoo morphologies. The feature vector we
@@ -94,44 +95,55 @@ users clicked.}
 %  Forest Transfer Learning and the \textsc{Space Warps} systems, divided by
 %  stage.}
 
-  \epsfigure[90]{Figures/arch_roc.png}{Architecture of the convolution
-  neural network trained on the galaxy zoo morphologies and Receiver Operating Curves for the Random
-  Forest Transfer Learning and the \textsc{Space Warps} systems, divided by
-  stage. }
 
 \begin{itemize}
   \item{Kaggle held a competition to classify galaxy morphology using galaxies
-    from the Sloan Digital Sky Survey, a comparable but older survey to the
-  Canada-France-Hawaii-Telescope. Many of the high-ranking competitors used
-convolution neural networks.}
+    from the Sloan Digital Sky Survey, a comparable (but older) survey to the
+  Canada-France-Hawaii-Telescope.}
   \item{We examined how well we could transfer the learning of morphology to
     identifying strong gravitational lenses by taking a convolution neural
   network trained on the Kaggle Galaxy Zoo data by Ryan Keisler and running our cutouts through
 to obtain a length 500 feature vector.}
   \item{We then trained these feature vectors on a random forest, which is an
-    ensemble of decision trees wherein the order and number of feature vectors
+    ensemble of decision trees wherein the order and feature vectors
   used in a given tree is random.}
 \item{For comparison, we plot the results from citizen scientists on these two
   stages as well. While we do worse overall, our results were extremely quick
  to compute, while the \textsc{Space Warps} project involved the
 efforts of tens of thousands over several months.}
-\item{Nevertheless, our training results take citizen-scientist inputs. There
-  is much potential in the future for machines and citizen-scientists to learn
-from one another!}
 \end{itemize}
+
+  \epsfigure[90]{Figures/arch_roc.png}{
+    Architecture of the convolution neural network trained on the galaxy zoo
+    morphologies and Receiver Operating Curves for the Random Forest Transfer
+    Learning and the \textsc{Space Warps} systems. }
+
+\section{Convolution Neural Network}
+\begin{itemize}
+  \item{Using \textsc{theano}, we have built a 5-layer CNN which we are
+    training from scratch on the \textsc{Space Warps} Dataset.}
+\item{Our algorithm uses RMSprop and dropout at each layer, and has an
+  architecture of:}
+\begin{itemize}
+\item{Convolution Layer of stride 4 and depth 10}
+\item{Max Pool Layer of stride 2}
+\item{Convolution Layer of stride 4 and depth 10}
+\item{Max Pool Layer of stride 2}
+\item{Fully Connected Layer with 50 neurons}
+\end{itemize}
+\item{Our classifier has been tested and works, but more training epochs are
+  needed before it will be competitive with our transfer learning results.}
+\end{itemize}
+
 
 \section{Future}
-
 \begin{itemize}
-  \item{Expand categorization procedure beyond binary lens-not to the specific
-    types of lenses.}
-  \item{Explore deeper types of transfer learning (e.g. retraining parts of the
+  \item{Explore deeper transfer learning (e.g. retraining parts of the
     network).}
-  \item{SOMETHING ELSE}
+  \item{Continue training our own CNN on the Space Warps Dataset directly.}
 \end{itemize}
 
-\section{Acknowledgements}
-
+\subsection{Acknowledgements}
 We received access to the dataset through Phil Marshall
 (\url{pjm@slac.stanford.edu}), who also graciously explained to us how
 \textsc{Space Warps}
@@ -139,6 +151,7 @@ currently works. The convolutional neural network upon which the transfer
 learning is based was kindly provided to us by Ryan Keisler
 (\url{rkeisler@stanford.edu}).
 All errors in interpretation or otherwise are entirely our own.
+
 
 \end{document}
 

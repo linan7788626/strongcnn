@@ -110,6 +110,7 @@
 \usepackage{ucbseal}
 \sealtype{0}
 % Added this in case urls are to be displayed
+\PassOptionsToPackage{obeyspaces}{url}
 \usepackage{url}
 % A better way to redefine section headers!
 \usepackage{sectsty}
