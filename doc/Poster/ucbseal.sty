@@ -1,0 +1,49 @@
+%% ucbseal.sty -- commands to manipulate the inclusion of the UCB seal
+%% graphic.
+%% 
+%% Based on prior work by Mary Ellen Foster and adapted to UCB.
+%% 
+%% Version 1.1 [2006/08/28] -- fixed PDF detection for teTeX 3
+%% 
+%% Mary Ellen Foster <M.E.Foster@ed.ac.uk>
+
+\def\filedate{2007/11/21}
+\def\fileversion{1.2}
+\ProvidesPackage{ucbseal}[\filedate\ v\fileversion\ 
+    Commands for including the UCB seal graphic]
+
+\RequirePackage{graphics}
+\RequirePackage{ifpdf}
+
+\newcommand{\ucbseal}{}
+\newcommand{\@endspecial}{}
+
+\newcommand{\sealtype}[1]{%
+    \def\@sealtype{#1}
+    \ifpdf
+        \ifnum\@sealtype=0
+            \renewcommand{\ucbseal}{ucbseal-540-139}
+        \else\ifnum\@sealtype=1
+            \renewcommand{\ucbseal}{ucbseal-540-874}
+        \else\ifnum\@sealtype=2
+            \renewcommand{\ucbseal}{ucbseal-line-294}
+        \else\ifnum\@sealtype=3
+            \renewcommand{\ucbseal}{ucbseal-line-540}
+        \else\ifnum\@sealtype=4
+            \renewcommand{\ucbseal}{ucbseal-line-k.eps}
+        \fi\fi\fi\fi\fi
+    \else
+        \renewcommand{\ucbseal}{ucbseal-540-139}
+        \renewcommand{\@endspecial}{%
+            \special{!/crestversion #1 def}}
+    \fi
+}
+\sealtype{0}
+
+\newcommand{\includeseal}{%
+    \includegraphics{\ucbseal}}
+
+\ifpdf
+\else
+    \AtBeginDocument{\@endspecial}
+\fi

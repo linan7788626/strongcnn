@@ -17,6 +17,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.cross_validation import cross_val_score, train_test_split
 from sklearn.metrics import roc_curve
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import label_binarize
 
 # this is something like 4.5 gigs of memory!
 project_dir = '/Users/cpd/Projects/strongcnn/'
@@ -70,11 +71,14 @@ y_train_2 = data[data['stage'] == 2].loc[cut_train_2]['alpha'] == 1
 X_test_2 = data[data['stage'] == 2].loc[cut_test_2][feature_cols].values
 y_test_2 = data[data['stage'] == 2].loc[cut_test_2]['alpha'] == 1
 
-import ipdb; ipdb.set_trace()
+mult_dict = {'dud': 0, 'lensed quasar': 1, 'lensing cluster': 2, 'lensed galaxy': 3}
+# y_train_mult = np.array([y_train[i] * mult_dict[data.loc[cut_train]['flavor'][i]] for i in xrange(len(y_train))])
+
+
 # train on svm and rf
-clf_rf = RandomForestClassifier()
-#scores_rf = cross_val_score(clf_rf, X, y)
-#print('rf: ', scores_rf)
+clf_rf = RandomForestClassifier(n_estimators=50, n_jobs=-1)
+scores_rf = cross_val_score(clf_rf, X, y)
+print('rf: ', scores_rf)
 
 
 clf_rf.fit(X_train, y_train)
@@ -90,18 +94,18 @@ plt.figure()
 plt.xlabel('Feature Number')
 plt.ylabel('Feature Importance')
 plt.plot(clf_rf.feature_importances_, 'k--')
-
+plt.savefig(project_dir + 'doc/Poster/Figures/feature_importance.pdf')
 
 # repeat for stage1 and stage 2
-clf_rf_1 = RandomForestClassifier()
+clf_rf_1 = RandomForestClassifier(n_estimators=50, n_jobs=-1)
 clf_rf_1.fit(X_train_1, y_train_1)
-y_score_1 =  clf_rf.predict_proba(X_test_1)
+y_score_1 =  clf_rf_1.predict_proba(X_test_1)
 y_score_1 = y_score_1[:, 1]
 fpr_1, tpr_1, _ = roc_curve(y_test_1, y_score_1)
 
-clf_rf_2 = RandomForestClassifier()
+clf_rf_2 = RandomForestClassifier(n_estimators=50, n_jobs=-1)
 clf_rf_2.fit(X_train_2, y_train_2)
-y_score_2 =  clf_rf.predict_proba(X_test_2)
+y_score_2 =  clf_rf_2.predict_proba(X_test_2)
 y_score_2 = y_score_2[:, 1]
 fpr_2, tpr_2, _ = roc_curve(y_test_2, y_score_2)
 
@@ -126,20 +130,22 @@ y_score_sw2 = y_score_sw[cond_sw2]
 fpr_sw1, tpr_sw1, _ = roc_curve(y_test_sw1, y_score_sw1)
 fpr_sw2, tpr_sw2, _ = roc_curve(y_test_sw2, y_score_sw2)
 
-
 plt.figure()
-plt.xlabel('FPR')
-plt.ylabel('TPR')
-plt.plot(fpr, tpr, '-', color='Red', linewidth=3, label='Convnet Random Forest All')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+# plt.plot(fpr, tpr, '--', color='Red', linewidth=3, label='Convnet Random Forest Stages 1 and 2')
 plt.plot(fpr_1, tpr_1, '--', color='Blue', linewidth=3, label='Convnet Random Forest Stage 1')
 plt.plot(fpr_2, tpr_2, '--', color='DarkOrange', linewidth=3, label='Convnet Random Forest Stage 2')
-plt.plot(fpr_sw1, tpr_sw1, linestyle='-', color='Blue', linewidth=3, label='SpaceWarps Stage1')
-plt.plot(fpr_sw2, tpr_sw2, linestyle='-', color='DarkOrange', linewidth=3, label='SpaceWarps Stage2')
+plt.plot(fpr_sw1, tpr_sw1, linestyle='-', color='Blue', linewidth=3, label='SpaceWarps Stage 1')
+plt.plot(fpr_sw2, tpr_sw2, linestyle='-', color='DarkOrange', linewidth=3, label='SpaceWarps Stage 2')
 plt.legend(loc='lower right')
+plt.xlim(-0.005, 0.4)
+plt.ylim(0.6, 1.0)
+plt.savefig(project_dir + 'doc/Poster/Figures/roc_curve.pdf')
 
 
+# repeat now for the different classes
 
-# what are the number of objects with alpha = 1 etc?
 
 
 import ipdb; ipdb.set_trace()

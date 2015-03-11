@@ -1,0 +1,144 @@
+% An example document showing the use of the ucbposter, based on the
+% infposter demo developed by M.Reddy (MXR), 24/2/97 and updated by
+% Mary E Foster, 10/5/2002. 
+
+\documentclass{ucbposter}
+
+\let\AuthorColour\red
+
+%http://www.inf.ed.ac.uk/systems/tex/infposter/infposter.html
+%\epsfigure[<width-percent>]{<filename>}{<caption>}
+% \begin{itemize}
+%   \item An example bullet point
+%   \begin{itemize}
+%     \item Example
+%   \end{itemize}
+% \end{itemize}
+
+
+\begin{document}
+
+\title{Recognizing Strong Gravitational Lenses}
+\author{Chris Davis and Andrew McLeod}
+\email{cpd@stanford.edu}
+%\homepage{http://radlab.cs.berkeley.edu/}
+\makeposter
+
+\section{Strong Gravitational Lenses}
+
+\epsfigure[40]{Figures/lens.png}{Example
+strong gravitational lens discovered by \textsc{Space Warps}.}
+
+\begin{itemize}
+\item{Strong lenses -- systems with possibly multiple magnified and
+distorted images of background objects (sources) due to the deflection of light
+by massive foreground objects (lenses) -- can be used as astrophysical tools to
+probe mass distributions, magnify distant objects, and measure fundamental
+cosmological parameters.
+\item{The main problem with strong gravitational lenses is their rarity:
+  \begin{itemize}
+    \item{For
+modern wide-field optical surveys which observe tens of millions of galaxies
+over many thousand square degrees, one expects to find only several hundred
+such systems.} \item{While strong lenses
+are relatively easy to spot by eye, machine learning techniques have thus far
+been unsuccessful in reliably identifying strong lenses and distinguishing them from
+image artifacts (e.g. cosmic rays) and other false positives (e.g. pixel
+noise). Maybe CNNs will help!}
+\end{itemize}}
+\end{itemize}
+\epsfigure[90]{Figures/sims.png}{Example fields (with cutouts in corner)
+containing simulated lenses.}
+
+\epsfigure[90]{Figures/duds.png}{Example fields (with cutouts in corner)
+containing no lenses. Cutouts indicate regions used as inputs for `duds'.}
+
+
+\section{Space Warps Dataset}
+
+\begin{itemize}
+  \item{\textsc{Space Warps} (\url{www.spacewarps.com}) is an online crowd-sourced gravitational
+    lens detection system that invites citizen
+scientists to interpret real data from the Canada-France-Hawaii Telescope
+Legacy Survey.}
+\item{Volunteers also analyze artificial ``training'' images of simulated
+    lenses as well as images confirmed to have no strong gravitational lenses.
+    Simulated lenses are also further demarcated by lens type (lensed quasar,
+  lensing galaxy, lensing cluster), each of which has different potential
+cosmological applications.}
+\item{\textsc{Space Warps} is divided into two stages, where the second stage
+    refines the results of the first by using considerably more difficult
+  training images. There are 24177 training images in Stage 1 and 1876 in Stage
+2. We also have 9030 ``test'' images (cutouts whose status is not known but for
+which we are interested in making reasonable guesses).}
+\item{\textsc{Space Warps} will provide a ``curated'' dataset of gravitational
+  lenses and lens-look-alikes to facilitate the training of future automated detection
+algorithms.}
+\item{We train our networks on the ``training'' images only, of which there are
+  20743 ``duds'' and 5310 ``sims''. From fields of 440 x 440 x 3, we cut
+  out 96 x 96 x 3 stamps based on the locations \textsc{Space Warps}
+users clicked.}
+\end{itemize}
+
+
+\section{Our Own CNN}
+
+
+\section{Transfer Learning with Galaxy Morphology}
+
+%\epsfigure[40]{Figures/architecture.pdf}{Architecture of the convolution
+%  neural network trained on the galaxy zoo morphologies. The feature vector we
+%use comes from the fully connected layer.}
+%
+%\epsfigure[40]{Figures/roc_curve.pdf}{Receiver Operating Curves for the Random
+%  Forest Transfer Learning and the \textsc{Space Warps} systems, divided by
+%  stage.}
+
+  \epsfigure[90]{Figures/arch_roc.png}{Architecture of the convolution
+  neural network trained on the galaxy zoo morphologies and Receiver Operating Curves for the Random
+  Forest Transfer Learning and the \textsc{Space Warps} systems, divided by
+  stage. }
+
+\begin{itemize}
+  \item{Kaggle held a competition to classify galaxy morphology using galaxies
+    from the Sloan Digital Sky Survey, a comparable but older survey to the
+  Canada-France-Hawaii-Telescope. Many of the high-ranking competitors used
+convolution neural networks.}
+  \item{We examined how well we could transfer the learning of morphology to
+    identifying strong gravitational lenses by taking a convolution neural
+  network trained on the Kaggle Galaxy Zoo data by Ryan Keisler and running our cutouts through
+to obtain a length 500 feature vector.}
+  \item{We then trained these feature vectors on a random forest, which is an
+    ensemble of decision trees wherein the order and number of feature vectors
+  used in a given tree is random.}
+\item{For comparison, we plot the results from citizen scientists on these two
+  stages as well. While we do worse overall, our results were extremely quick
+ to compute, while the \textsc{Space Warps} project involved the
+efforts of tens of thousands over several months.}
+\item{Nevertheless, our training results take citizen-scientist inputs. There
+  is much potential in the future for machines and citizen-scientists to learn
+from one another!}
+\end{itemize}
+
+\section{Future}
+
+\begin{itemize}
+  \item{Expand categorization procedure beyond binary lens-not to the specific
+    types of lenses.}
+  \item{Explore deeper types of transfer learning (e.g. retraining parts of the
+    network).}
+  \item{SOMETHING ELSE}
+\end{itemize}
+
+\section{Acknowledgements}
+
+We received access to the dataset through Phil Marshall
+(\url{pjm@slac.stanford.edu}), who also graciously explained to us how
+\textsc{Space Warps}
+currently works. The convolutional neural network upon which the transfer
+learning is based was kindly provided to us by Ryan Keisler
+(\url{rkeisler@stanford.edu}).
+All errors in interpretation or otherwise are entirely our own.
+
+\end{document}
+
