@@ -44,11 +44,28 @@ Andrew McLeod\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-    The detection of strong gravitational lenses
+    The detection of a large, representative set of strong gravitational lenses
+    could greatly aid in our understanding of cosmology. Unfortunately they are
+    quite rare, and the best techniques now revolve around squads of scientists
+    manually scanning through images. This is presently borderline
+    unsustainable and will be laughably inefficient with the advent of the
+    Large Synoptic Survey Telescope. Here we examine the effectiveness of
+    convolution neural networks and transfer learning for automated detection
+    algorithms of strong gravitational lenses. We use images from the
+    \textsc{Space Warps} project, a citizen science initiative to examine tens
+    of thousands of fields of galaxies for the presence of strong gravitational
+    lenses. 
+    % TODO: Insert results!
+    Scripts used in the analysis of this paper are freely available at
+    \url{https://github.com/cpadavis/strongcnn}. The images are currently only
+    available to those who contact the author, but will be available to the
+    public in the near future.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
 \section{Introduction}
+
+% TODO: insert references!
 
 A consequence of Einstein's Theory of General Relativity is that mass bends the
 path of light. Most of the time the deflections are very small; the original
@@ -59,7 +76,17 @@ deep gravitational potential (say, near the center of the dark matter halo of a
 galaxy cluster), the deflections can be particularly large, resulting in
 brilliant arcs and multiple images. These strong deflections due to light
 passing through a deep gravitational potential are termed strong gravitational
-lenses.
+lenses. The gravitational lensing signal can heuristically be thought of as a
+trade off between a couple factors: larger gradients in the gravitational
+potential create larger distortions (and larger gradients in the gravitational
+potential tend to reside near to the center of the foreground galaxy or galaxy
+cluster); the more separated the foreground and background objects are, the
+bigger the proportional distortion on the background object by the foreground
+(but the farther away the background object is, the smaller it
+appears\footnote{Note that this is only true in the ``low redshift'' universe:
+  when objects are farther away than a cosmological redshift of $z \approx 2.5$
+or about 2.5 Gyr after the birth of the Universe, they will actually
+\textit{grow} in angular extent.}).
 
 The very existence of these potentials acts as a verification of the Theory of
 General Relativity, but they can also be used for much more. Strong
@@ -110,23 +137,6 @@ survey for short amounts of time each, it is hoped that a more complete sample
 of lenses can be discovered, which can then be fed into lens-finding algorithms
 to further improve their performance.
 
-\begin{figure*}[!ht]
-\begin{minipage}[b]{0.24\linewidth}
-\centering\epsfig{file=Figures/gallery/0.png,width=\linewidth,angle=0,clip=}
-\end{minipage} \hfill
-\begin{minipage}[b]{0.24\linewidth}
-\centering\epsfig{file=Figures/gallery/1.png,width=\linewidth,angle=0,clip=}
-\end{minipage} \hfill
-\begin{minipage}[b]{0.24\linewidth}
-\centering\epsfig{file=Figures/gallery/2.png,width=\linewidth,angle=0,clip=}
-\end{minipage} \hfill
-\begin{minipage}[b]{0.24\linewidth}
-\centering\epsfig{file=Figures/gallery/3.png,width=\linewidth,angle=0,clip=}
-\end{minipage} \hfill
-  \caption{Typical Space Warps duds. Insets indicate regions where volunteers typically
-  clicked.}
-  \label{fig:duds}
-\end{figure*}
 
 \begin{figure*}[!ht]
 \begin{minipage}[b]{0.24\linewidth}
@@ -142,8 +152,26 @@ to further improve their performance.
 \centering\epsfig{file=Figures/gallery/7.png,width=\linewidth,angle=0,clip=}
 \end{minipage} \hfill
   \caption{Typical sims. Insets indicate the location of the lens in the
-  image.}
+  image. These insets are fed into our training system.}
   \label{fig:sims}
+\end{figure*}
+
+\begin{figure*}[!ht]
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=Figures/gallery/0.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=Figures/gallery/1.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=Figures/gallery/2.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.24\linewidth}
+\centering\epsfig{file=Figures/gallery/3.png,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+  \caption{Typical Space Warps duds. Insets indicate regions where volunteers
+  typically clicked. These insets are then fed into our training system.}
+  \label{fig:duds}
 \end{figure*}
 
 %-------------------------------------------------------------------------
@@ -166,15 +194,11 @@ We would like to examine the following questions:
 \item{ Do we have enough data to reasonably train and test a CNN? Can we get
        around this by artificially inflating the data, e.g. by adding rotated
      images?}
-\item{ What processing needs to be done on the data? What kind of scaling of
-       pixel data is appropriate for automated detection? Should we compress
-     the five different 'colors' to a smaller number of dimensions?}
-   \item{ How do citizen-scientists do compared with this automated system?}
-   \item{Can we use the results of citizen-scientists to train the CNN?}
-\item{What sets of classifications are needed? Are we better served sticking
-       to 'lens' and 'not lens', or should we use several classification
-       categories ('lensed arcs', 'lensed multiple images', 'non-lens pixel
-     noise')?}
+\item{ How do citizen-scientists do compared with this automated system?}
+\item{ Can we use the results of citizen-scientists to train the CNN?}
+\item{ How well does using features extracted from a convolution neural network
+       trained on galaxy morphology perform when determining the presence of
+     strong gravitational lenses?}
 \end{itemize}
 
 
@@ -206,16 +230,104 @@ independent of rotations as well as small amounts of stretching and
 translation, so our data can be augmented by applying those transformations to
 our images.
 
-We plan to train a classifier on this data using two different methods. First,
-we will code our own convolutional net in python using \textsc{theano}. Second,
-we will apply transfer learning techniques to train on a convolutional net
+We train a classifier on this data using two different methods. First,
+we code our own convolutional net in python using \textsc{theano}. Second,
+we apply transfer learning techniques to train on a convolutional net
 galaxy morphology classifier, which has graciously been made available to us by
 Ryan Keisler and which achieved 7th place in the 2014 Galaxy Zoo Kaggle
 competition.  This classifier runs $96\times96$ images through 3 convolutional
 layers and 2 fully-connected layers and predicts a galaxy to have one of 37
-enumerated morphologies. We plan to train our classifier on top of the first
-fully-connected layer, which has 500 neurons.
+enumerated morphologies. (See Figure~\ref{fig:ryan_architecture}.) We
+train classifiers on top of the first fully-connected layer, which has 500
+neurons.
 
+%-------------------------------------------------------------------------
+\subsection{The \textsc{Space Warps} Catalog}
+
+\textsc{Space Warps} is a web-based service that enables the discovery of
+strong gravitational lenses in wide-field imaging surveys by large numbers of
+people. Carefully produced color composite images are displayed to volunteers
+via a classification interface which records their estimates of the positions
+of candidate lensed features. Simulated lenses, and expert-classified
+non-lenses, are inserted into the image stream at random intervals; this
+training set is used to give the volunteers feedback on their performance, and
+to estimate a dynamically-updated probability for any given image to contain a
+lens. Low probability systems are retired from the site periodically,
+concentrating the sample towards a set of candidates; this ``stage 1'' set is
+then re-classified by the volunteers in a second refinement stage. This ``stage
+2'' has a different set of training images, ones that are generally considered
+`harder'. Most stage 1 simulated lenses are very obvious\footnote{Very bright
+and blue quasars multiply-imaged around a small red galaxy, very bright,
+separated, and full \href{http://en.wikipedia.org/wiki/Einstein_ring}{Einstein
+rings.}}, while simulated lenses in stage 2 are often much more subtle.
+\footnote{Dim multiply-imaged quasars of varying magnitude, dim and incomplete
+Einstein rings located close to a galaxy.} Figures~\ref{fig:duds} and
+\ref{fig:sims}\xspace show example stage 2 fields with cutouts inlaid. Notice
+that while the first three images in Figure~\ref{fig:sims} are very clearly
+strong gravitational lenses \footnote{For the neophyte: the first is a broken
+  blue arc around a central red galaxy; the second is a blue arc around a
+  central yellow galaxy; the third is a multiply-imaged blue quasar (images
+appear above and below the central galaxy), the fourth is a broken dim arc
+located behind a very bright foreground galaxy.}, the fourth is very difficult
+to find.  Unfortunately, we would very much like to find these, because there
+are many such systems and they contain important information about the mass
+structures at the centers of galaxies.\footnote{The trade off is this: the rate
+  of alignment between foreground and background objects decreases as one
+  decreases the area around a foreground object, but the strength of strong
+  gravitational distortions -- and the signal we can pull out from identifying
+  such systems -- increases as one gets closer to the center of the foreground
+  object. A yet further complication to this is that background objects are
+  naturally fainter than foreground objects, \textit{and} the foreground
+  objects with the highest gravitational potential (and hence the largest
+distortions of background images) tend to also be the brightest objects. Both
+these complications render the task even more difficult.}
+Figure~\ref{fig:duds} highlights the difficulties of this task. Each `dud' has
+features that conceivably look like strong gravitational lensing, but are in
+actuality some other confounding effect: color gradients from variations in the
+Point Spread Function between the different color bands, dust surrounding a
+galaxy, galaxies that are actually in the same cluster, and chance alignments
+of background galaxies and foreground stars.
+
+The fields users observe are $440\times440$ size images, containing multiple
+potential locations for strong gravitational lenses, although it is unlikely
+that a field contains more than one strong gravitational lens. In order to
+generate $96\times96$ images of lenses and non-lenses, we use the recorded
+estimates of the positions of candidate lensed feature. More specifically, we
+apply the \textsc{DBSCAN} clustering algorithm, which agglomeratively grows
+clusters such that that are within a minimum distance and contain a minimum
+number of samples. \textsc{DBSCAN} is a convenient choice of a clustering
+algorithm because it has a well-defined way of rejecting outliers, which we
+generically interpret as genuine ``mis-clicks'' on the part of users. We are
+very generous in the definition of a cluster and only require two members within
+100 pixels of each other to form a cluster. 
+
+The fear of noisy clusters is this: the real task of our techniques is to
+distinguish strong gravitational lens systems from other configurations of
+galaxies (for example, random alignments of galaxies). Noisy clicks end up
+creating random cutouts of the field, slightly changing the task of our
+classifier to distinguishing strong gravitational lens systems from random
+cutouts from the field of a galaxy survey.  Inclusion of noise however ended up
+not being an issue for stage 2: non-lenses, where the correct action on the
+part of the user is to leave no marker, have a median of 28 markers in stage 2,
+while simulated lenses (where the correct answer is to click at a specific
+location) have a median of 180 markers. In stage 1, the simulated lenses have a
+median of 80 markers, while the duds have a median of 3 markers (and a mean of
+9.6). It may be the case that noise is injected in the stage 1 non-lens sample.
+
+Overall, our base dataset has 24,177 images from stage 1, of which 5159 are of
+simulated lenses, and 1876 images from stage 2, of which 151 are simulated
+lenses. We also have 9030 classifications that stage 2 users made of images in
+the CFHTLS survey where it is unknown whether they contain a lens or not. From
+these classifications, a list of approximately 40 candidate strong
+gravitational lensing objects have been found which will soon receive
+spectroscopic follow-up to confirm whether they are strong gravitational
+lensing systems or not.\footnote{Spectroscopy can yield precise redshifts of
+  different objects in a field. This way, if different parts of a strong
+  gravitational lens arc are at the same redshift, or if the multiply-imaged
+quasars are, then one can confirm that we are really seeing such a system.} A
+future project with this work would be to link the probabilities from the
+\textsc{Space Warps} system with the probabilities obtained by a detection
+algorithm.
 
 %-------------------------------------------------------------------------
 \section{Results}
@@ -237,10 +349,29 @@ fully-connected layer, which has 500 neurons.
 \caption{Architecture of the convolution
   neural network trained on the galaxy zoo morphologies. The feature vector we
 use comes from the fully connected layer.}
-\label{fig:architecture}
+\label{fig:ryan_architecture}
 \end{figure}
 
+\begin{figure*}%[!ht] 
+\begin{minipage}[b]{0.48\linewidth}
+\centering\epsfig{file=Figures/roc_curve_stage_1.pdf,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.48\linewidth}
+\centering\epsfig{file=Figures/roc_curve_stage_2.pdf,width=\linewidth,angle=0,clip=}
+\end{minipage} \hfill
+  \caption{Receiver Operating Curves the \textsc{Space Warps} system and
+    different linear classifiers trained on feature vectors extracted from a
+    convolution neural network originally used to determine galaxy
+  morphologies. We find that of the linear classifiers on the feature vectors,
+support vector machine classifications perform best on the test dataset,
+however all the feature vectors perform worse than the users themselves. Note
+that the $x$-axis stops at a false positive rate of 0.5, and the $y$-axis
+begins at a true positive rate of 0.5.}
+\label{fig:roc_tl} 
+\end{figure*}
+
 % TODO: Redescribe the network, including data augmentation and such.
+Transfer Learning provides a mechanism by which 
 
 %-------------------------------------------------------------------------
 \section{Discussion}
@@ -258,6 +389,7 @@ use comes from the fully connected layer.}
   \label{fig:roc}
 \end{figure}
 
+% TODO: make figure with probability distributions between classifiers and sw
 
 %-------------------------------------------------------------------------
 \section{Conclusions}
@@ -268,11 +400,11 @@ use comes from the fully connected layer.}
 %-------------------------------------------------------------------------
 \section{Acknowledgements}
 We received access to the dataset through Phil Marshall
-(\url{pjm@slac.stanford.edu}), who also graciously explained to us how
+\footnote{\url{pjm@slac.stanford.edu}}, who also graciously explained to us how
 \textsc{Space Warps}
 currently works. The convolutional neural network upon which the transfer
 learning is based was kindly provided to us by Ryan Keisler
-(\url{rkeisler@stanford.edu}).
+\footnote{\url{rkeisler@stanford.edu}}.
 All errors in interpretation or otherwise are entirely our own.
 
 %-------------------------------------------------------------------------
@@ -282,8 +414,7 @@ We have created the cutouts of our images from the catalogs.
 We have begun constructing our own convolutional network with two
 convolutional/max-pool layers and two fully-connected layers. Although we have
 not yet trained on our images, we can load these images and run them
-through our initialized classifier. Figures~\ref{fig:duds} and
-\ref{fig:sims}\xspace show example fields with cutouts inlaid.
+through our initialized classifier. 
 
 % TODO: copy relevant bib stuff over so I don't have a 4 mb bib
 {\small
