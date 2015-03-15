@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\input{macros.tex}
 % Include other packages here, before hyperref.
 
 % If you comment hyperref and then uncomment it, you should delete
@@ -58,7 +58,7 @@ Andrew McLeod\\
     % TODO: Insert results!
     We find that using a convolution neural network trained on Galaxy
     morphologies as a feature extractor performs admirably but markedly worse
-    than the citizen scientists.
+    than the citizen-scientists.
     Scripts used in the analysis of this paper are freely available at
     \url{https://github.com/cpadavis/strongcnn}. The images are currently only
     available to those who contact the author, but will be available to the
@@ -70,8 +70,8 @@ Andrew McLeod\\
 
 % TODO: insert references!
 
-A consequence of Einstein's Theory of General Relativity
-is that mass bends the path of light.\cite{Einstein:2007aa} Most of the time the deflections are very
+A consequence of Einstein's Theory of General Relativity is that mass bends the
+path of light. \cite{Einstein:2007aa} Most of the time the deflections are very
 small; the original 'gravitational lens' that tested the veracity of Einstein's
 theory in the years after the first world war was the sun, which deflected
 light from stars behind it only a few seconds of arc. However, when light
@@ -88,44 +88,48 @@ background objects are, the bigger the proportional distortion on the
 background object by the foreground (but the farther away the background object
 is, the smaller it appears\footnote{Note that this is only true in the ``low
   redshift'' universe: when objects are farther away than a cosmological
-  redshift of $z \approx 2.5$ or about 2.5 Gyr after the birth of the Universe,
-they will actually \textit{grow} in angular extent.}).\cite{Kochanek:2006oz}
+redshift of $z \approx 2.5$ or about 2.5 Gyr after the birth of the Universe,
+they will actually \textit{grow} in angular extent.}). \cite{Kochanek:2006oz}
 
 The very existence of these potentials acts as a verification of the Theory of
 General Relativity, but they can also be used for much more. Strong
 gravitational lenses are one of the few ways to directly probe the distribution
 of dark matter, a particle (or possibly family of particles) that does not emit
 electromagnetic radiation but does have mass and hence interacts
-gravitationally with normal baryonic matter.\cite{Refsdal:1964aa} This allows us to tally the mass
-of the largest gravitationally-bound structures in the universe, galaxy
-clusters, which can give us insight into the formation history of these massive
-objects. In this way, strong gravitational lenses can then tell us something
-about the expansion history of the universe, by setting limits on how massive
-the most massive objects in the universe can be. The properties of the bent
-light itself can also say much about that expansion
-history.\cite{Refsdal:1964ab, Kundic:1997aa, Barnacka:2014aa} When an object is
-strongly-lensed into multiple images, each image travels a different span of
-space and time. When an object does not vary much with time, these different
-path lengths have no practical import. However, if the object varies
-appreciably quickly (say it is a distant supermassive black hole at the center
-of a galaxy whose accretion disk emits high-energy radiation at varying rates)
-then these different path lengths can be used to pin down the rate of expansion
-of the universe.
+gravitationally with normal baryonic matter. \cite{Refsdal:1964aa} This allows
+us to tally the mass of the largest gravitationally-bound structures in the
+universe, galaxy clusters, which can give us insight into the formation history
+of these massive objects. \cite{Oguri:2010aa} They can also find extremely
+distant objects. \cite{Hezaveh:2014aa} In this way, strong gravitational lenses
+can then tell us something about the expansion history of the universe, by
+setting limits on how massive the most massive objects in the universe can be.
+The properties of the bent light itself can also say much about that expansion
+history. \cite{Refsdal:1964ab, Kundic:1997aa, Gonzalez:2012aa, Barnacka:2014aa,
+Hojjati:2014aa, Suyu:2014aa} When an object is strongly-lensed into multiple
+images, each image travels a different span of space and time. When an object
+does not vary much with time, these different path lengths have no practical
+import. However, if the object varies appreciably quickly (say it is a distant
+quasar, a supermassive black hole at the center of a galaxy whose accretion
+disk emits high-energy radiation at varying rates) then these different path
+lengths can be used to pin down the rate of expansion of the universe. Finally,
+strong gravitational lenses also have the potential to rule out or validate
+alternatives to General Relativity. \cite{Troxel:2014aa}
 
 Unfortunately, for how useful strong gravitational lenses are, they are also
 extremely rare. A next generation optical survey like the Large Synoptic Survey
-Telescope can expect to find only ten thousand lenses in the whole sky, while
-it will find ten billion galaxies. Currently in astronomy there are only order
-hundreds of strong gravitational lenses known, mostly discovered by 'eyeball
-squads' of graduate students. The small number means that target criteria must
-be somewhat broad in order to maintain a relatively high completeness. Using
-reasonable target criteria to find strong lenses such as looking only at
-massive galaxies still means that nearly ten million objects will need to be
-inspected in the next generation in order to find those ten thousand lenses. A
-team of ten graduate students could expect to spend about 14 years looking at
-these objects. Computer algorithms are not much better: most current machine
-learning algorithms are woefully-underpowered for this task, and generally have
-poor completeness or poor purity -- and often poor both. Additionally, some
+Telescope or the Euclid space telescope can expect to find only ten thousand
+lenses in the whole sky, while it will find ten billion galaxies.
+\cite{Serjeant:2014aa} Currently in astronomy there are only order hundreds of
+strong gravitational lenses known, mostly discovered by 'eyeball squads' of
+graduate students. The small number means that target criteria must be somewhat
+broad in order to maintain a relatively high completeness. Using reasonable
+target criteria to find strong lenses such as looking only at massive galaxies
+still means that nearly ten million objects will need to be inspected in the
+next generation in order to find those ten thousand lenses. A team of ten
+graduate students could expect to spend about 14 years looking at these
+objects. Computer algorithms are not much better: most current machine learning
+algorithms are woefully-underpowered for this task, and generally have poor
+completeness or poor purity -- and often poor both. Additionally, some
 algorithms are better at finding some types of lenses than others; some perform
 well on the brilliant arcs, but poorly on the multiply-imaged objects, or vice
 versa. For example, \cite{Kubo:2008aa} attempt to fit arc-like features in
@@ -194,7 +198,7 @@ to further improve their performance.
 In this project we will use images collected by the Canada-France-Hawaii
 Telescope Legacy Survey to analyze how Convolution Neural Networks can improve
 automated detection of strong lens systems. We will also assess the performance
-of citizen scientists by comparing our results to them. From other graduate
+of citizen-scientists by comparing our results to them. From other graduate
 work (but not coursework), we have the locations and categories of around one
 hundred and twenty known strong lenses, three thousand large fields verified to
 contain no strong lenses, six thousand simulated strong lenses, and several
@@ -221,7 +225,7 @@ We would like to examine the following questions:
 
 From approximately 12000 fields of $440\times440\times3$ fields, we have
 constructed approximately 30000 cutouts sized $96\times96\times3$. These cutouts
-are selected based on where citizen scientists clicked, on the theory that both
+are selected based on where citizen-scientists clicked, on the theory that both
 'correct' and 'incorrect' selections provide useful information about the
 characteristics of gravitational lenses. In general, we have access to two
 broad classes of images: 'training' and 'test' images. The 'training' images
@@ -229,7 +233,7 @@ include fields that were verified in advance to not contain any lenses as well
 as simulated lensed galaxies, quasars, and clusters. Many of the simulated
 objects are over-exaggerated and extremely obvious, but we also have access to
 a second 'refinement stage' of the project, where much harder simulations were
-given to users. The 'test' images are the fields that citizen scientists
+given to users. The 'test' images are the fields that citizen-scientists
 viewed, assessing whether a lens was in the field or not. In these 'test'
 images are 120 known strong gravitational lens systems, which are also included
 in this set. (The project confirms roughly half of these known lenses for
@@ -436,7 +440,7 @@ perform the best as a classifier on the feature vectors, but that the feature
 vectors perform more poorly than the \textsc{Space Warps} users. We must caveat
 though that \textsc{Space Warps} does not create a validation dataset against
 which to test the performance of the system. Even if we don't perform quite as
-well as the citizen scientists, we consider this a
+well as the citizen-scientists, we consider this a
 promising baseline for future performance by transfer learning: we have not
 even begun to consider potential performance gains by retraining the
 convolution neural network on the \textsc{Space Warps} data.
@@ -444,7 +448,36 @@ convolution neural network on the \textsc{Space Warps} data.
 %-------------------------------------------------------------------------
 \section{Discussion}
 
-% Do we need this section?
+We briefly attempt to answer the questions we posed at the beginning of this
+study:
+
+% answer the questions
+\subsection*{Do we have enough data to reasonably train and test a CNN?}
+
+We do, and we have easy ways to augment the data through rotations, flips, and
+(in the future) other transformations that leave the identification of a strong
+gravitational lens invariant.
+
+\subsection*{How do citizen-scientists do compared with this automated system?}
+
+Currently the citizen-scientists outperform our automated systems.
+
+\subsection*{Can we use the results of citizen-scientists to train the CNN?}
+
+In the sense that the citizen-scientists are used in creating the cutouts for
+our system, we find their results quite useful. We were unable to use them for
+much more than that, however. Future work could involve calibrating our
+classifications against the probabilities from the \textsc{Space Warps}
+citizen-scientist classification system.
+
+\subsection*{How well does using features extracted from a convolution neural
+network trained on galaxy morphology perform when determining the presence of
+strong gravitational lenses?}
+
+We appear to do admirably well in that our receiver operating curves obtain
+remarkably high true positive rates for modestly low false positive rates.
+However, the extracted features do worse than the citizen-scientists from
+\textsc{Space Warps}.
 
 %-------------------------------------------------------------------------
 \section{Conclusions}
@@ -460,7 +493,7 @@ perform at the detection task.
 We find that features extracted from a convolution neural network trained on
 the classification of galaxy morphology (with a linear support vector
 classifier on top for converting the feature vector to a binary ``lens'' and
-``not-lens'') performs admirably but markedly worse than the citizen scientists
+``not-lens'') performs admirably but markedly worse than the citizen-scientists
 trained on the dataset. Further work examining improvements by retraining the
 whole neural network could lead to a generic classification machine that takes
 images from \textit{any} galaxy survey and states whether the image contains a
@@ -472,7 +505,7 @@ thousands more ``unknown'' systems and could lead to more gravitational lenses
 being identified.
 
 %-------------------------------------------------------------------------
-\section{Acknowledgements}
+\subsection*{Acknowledgements}
 We received access to the dataset through Phil Marshall
 \footnote{\url{pjm@slac.stanford.edu}}, who also graciously explained to us how
 \textsc{Space Warps}

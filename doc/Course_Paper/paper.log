@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.11)  15 MAR 2015 15:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.11)  15 MAR 2015 16:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -157,6 +157,71 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
+(./macros.tex
+
+./macros.tex:18: LaTeX Error: Command \etal already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.18 \newcommand{\etal}{et~al.~}
+                                
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+./macros.tex:19: LaTeX Error: Command \eg already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.19 \newcommand{\eg}{{\it e.g.\ }}
+                                   
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+./macros.tex:20: LaTeX Error: Command \ie already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.20 \newcommand{\ie}{{\it i.e.\ }}
+                                   
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+./macros.tex:21: LaTeX Error: Command \etc already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.21 \newcommand{\etc}{{\it etc.\ }}
+                                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2014/10/28 v1.1a Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 137.
+))
 (/usr/local/texlive/2014/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
 
@@ -296,14 +361,6 @@ LaTeX Font Info:    Try loading font information for OT1+ptm on input line 25.
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 ABD: EveryShipout initializing macros
-(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
-Package: color 2014/10/28 v1.1a Standard LaTeX Color (DPC)
-
-(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/color.cfg
-File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
-)
-Package color Info: Driver file: pdftex.def on input line 137.
-)
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count115
@@ -368,169 +425,123 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 46.
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 (Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 63.
-
-Underfull \hbox (badness 5970) in paragraph at lines 73--93
-[]\OT1/ptm/m/n/10 A con-se-quence of Ein-stein's The-ory of Gen-eral
- []
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
-
-LaTeX Warning: Citation `Refsdel:1964ab' on page 1 undefined on input line 106.
-
-
-[1{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+ [1{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-<Figures/gallery/4.png, id=34, 539.01375pt x 539.01375pt>
+<Figures/gallery/4.png, id=52, 539.01375pt x 539.01375pt>
 File: Figures/gallery/4.png Graphic file (type png)
 
 <use Figures/gallery/4.png>
-Package pdftex.def Info: Figures/gallery/4.png used on input line 157.
+Package pdftex.def Info: Figures/gallery/4.png used on input line 161.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/5.png, id=37, 539.01375pt x 539.01375pt>
+<Figures/gallery/5.png, id=55, 539.01375pt x 539.01375pt>
 File: Figures/gallery/5.png Graphic file (type png)
 
 <use Figures/gallery/5.png>
-Package pdftex.def Info: Figures/gallery/5.png used on input line 160.
+Package pdftex.def Info: Figures/gallery/5.png used on input line 164.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/6.png, id=39, 539.01375pt x 539.01375pt>
+<Figures/gallery/6.png, id=57, 539.01375pt x 539.01375pt>
 File: Figures/gallery/6.png Graphic file (type png)
 
 <use Figures/gallery/6.png>
-Package pdftex.def Info: Figures/gallery/6.png used on input line 163.
+Package pdftex.def Info: Figures/gallery/6.png used on input line 167.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/7.png, id=41, 539.01375pt x 539.01375pt>
+<Figures/gallery/7.png, id=59, 539.01375pt x 539.01375pt>
 File: Figures/gallery/7.png Graphic file (type png)
 
 <use Figures/gallery/7.png>
-Package pdftex.def Info: Figures/gallery/7.png used on input line 166.
+Package pdftex.def Info: Figures/gallery/7.png used on input line 170.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/0.png, id=43, 539.01375pt x 539.01375pt>
+<Figures/gallery/0.png, id=61, 539.01375pt x 539.01375pt>
 File: Figures/gallery/0.png Graphic file (type png)
 
 <use Figures/gallery/0.png>
-Package pdftex.def Info: Figures/gallery/0.png used on input line 175.
+Package pdftex.def Info: Figures/gallery/0.png used on input line 179.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/1.png, id=45, 539.01375pt x 539.01375pt>
+<Figures/gallery/1.png, id=63, 539.01375pt x 539.01375pt>
 File: Figures/gallery/1.png Graphic file (type png)
 
 <use Figures/gallery/1.png>
-Package pdftex.def Info: Figures/gallery/1.png used on input line 178.
+Package pdftex.def Info: Figures/gallery/1.png used on input line 182.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/2.png, id=47, 539.01375pt x 539.01375pt>
+<Figures/gallery/2.png, id=65, 539.01375pt x 539.01375pt>
 File: Figures/gallery/2.png Graphic file (type png)
 
 <use Figures/gallery/2.png>
-Package pdftex.def Info: Figures/gallery/2.png used on input line 181.
+Package pdftex.def Info: Figures/gallery/2.png used on input line 185.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
 
-<Figures/gallery/3.png, id=49, 539.01375pt x 539.01375pt>
+<Figures/gallery/3.png, id=67, 539.01375pt x 539.01375pt>
 File: Figures/gallery/3.png Graphic file (type png)
 
 <use Figures/gallery/3.png>
-Package pdftex.def Info: Figures/gallery/3.png used on input line 184.
+Package pdftex.def Info: Figures/gallery/3.png used on input line 188.
 (pdftex.def)             Requested size: 119.24821pt x 119.24136pt.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 208.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 212.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 208.
- [2] [3 <./Figures/gallery/4.png> <./Figures/gallery/5.png> <./Figures/gallery/
-6.png> <./Figures/gallery/7.png> <./Figures/gallery/0.png> <./Figures/gallery/1
-.png> <./Figures/gallery/2.png> <./Figures/gallery/3.png>]
-<Figures/architecture.pdf, id=102, 1027.84pt x 770.88pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 212.
+ [2]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3 <./Figures/gallery/4.png> <./Figures/gallery/5.png> <./Figures/gallery/6.pn
+g> <./Figures/gallery/7.png> <./Figures/gallery/0.png> <./Figures/gallery/1.png
+> <./Figures/gallery/2.png> <./Figures/gallery/3.png>]
+<Figures/architecture.pdf, id=120, 1027.84pt x 770.88pt>
 File: Figures/architecture.pdf Graphic file (type pdf)
 
 <use Figures/architecture.pdf>
-Package pdftex.def Info: Figures/architecture.pdf used on input line 362.
+Package pdftex.def Info: Figures/architecture.pdf used on input line 366.
 (pdftex.def)             Requested size: 237.13594pt x 177.85152pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-<Figures/roc_curve_stage_1.pdf, id=104, 578.16pt x 433.62pt>
+<Figures/roc_curve_stage_1.pdf, id=122, 578.16pt x 433.62pt>
 File: Figures/roc_curve_stage_1.pdf Graphic file (type pdf)
 
 <use Figures/roc_curve_stage_1.pdf>
-Package pdftex.def Info: Figures/roc_curve_stage_1.pdf used on input line 371.
+Package pdftex.def Info: Figures/roc_curve_stage_1.pdf used on input line 375.
 (pdftex.def)             Requested size: 238.48886pt x 178.86383pt.
 
-<Figures/roc_curve_stage_2.pdf, id=106, 578.16pt x 433.62pt>
+<Figures/roc_curve_stage_2.pdf, id=124, 578.16pt x 433.62pt>
 File: Figures/roc_curve_stage_2.pdf Graphic file (type pdf)
 
 <use Figures/roc_curve_stage_2.pdf>
-Package pdftex.def Info: Figures/roc_curve_stage_2.pdf used on input line 374.
+Package pdftex.def Info: Figures/roc_curve_stage_2.pdf used on input line 378.
 (pdftex.def)             Requested size: 238.48886pt x 178.86383pt.
- [4 <./Figures/architecture.pdf>] [5 <./Figures/roc_curve_stage_1.pdf> <./Figur
-es/roc_curve_stage_2.pdf>] (./paper.bbl
-./paper.bbl:6: Undefined control sequence.
-l.6 \newblock {\em \mnras
-                         }, 448:1446--1462, Apr. 2015.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+ [4 <./Figures/architecture.pdf>]
+Underfull \hbox (badness 1072) in paragraph at lines 463--464
+[]\OT1/ptm/m/n/10 Currently the citizen-scientists out-per-form our au-to-
+ []
 
-./paper.bbl:28: Undefined control sequence.
-l.28 \newblock {\em \mnras
-                          }, 385:918--928, Apr. 2008.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-./paper.bbl:36: Undefined control sequence.
-l.36 \newblock {\em \apj
-                        }, 482:75, June 1997.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-./paper.bbl:48: Undefined control sequence.
-l.48 \newblock {\em \mnras
-                          }, 128:295, 1964.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 493.
- [6
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 493.
+[5 <./Figures/roc_curve_stage_1.pdf> <./Figures/roc_curve_stage_2.pdf>]
+(./paper.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 526.
+ [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 526.
  (./paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 493.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 493.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 493.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 526.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 526.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 526.
  ) 
 Here is how much of TeX's memory you used:
- 6413 strings out of 493109
- 92687 string characters out of 6135004
- 184325 words of memory out of 5000000
- 9719 multiletter control sequences out of 15000+600000
- 38014 words of font info for 84 fonts, out of 8000000 for 9000
+ 6501 strings out of 493109
+ 93282 string characters out of 6135004
+ 186571 words of memory out of 5000000
+ 9792 multiletter control sequences out of 15000+600000
+ 36388 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  34i,10n,26p,812b,324s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
@@ -545,10 +556,10 @@ st/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2014/texmf-dist/font
 s/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/ur
 w/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/ut
 mri8a.pfb>
-Output written on paper.pdf (6 pages, 3102552 bytes).
+Output written on paper.pdf (6 pages, 3107749 bytes).
 PDF statistics:
- 367 PDF objects out of 1000 (max. 8388607)
- 204 compressed objects within 3 object streams
- 39 named destinations out of 1000 (max. 500000)
+ 391 PDF objects out of 1000 (max. 8388607)
+ 228 compressed objects within 3 object streams
+ 52 named destinations out of 1000 (max. 500000)
  122 words of extra memory for PDF output out of 10000 (max. 10000000)
 
