@@ -13,7 +13,6 @@ core.*
 .*.sw*
 
 # latex
-*.pdf
 *.bcf
 *.aux
 *.out
