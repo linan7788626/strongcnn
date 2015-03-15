@@ -56,6 +56,9 @@ Andrew McLeod\\
     of thousands of fields of galaxies for the presence of strong gravitational
     lenses. 
     % TODO: Insert results!
+    We find that using a convolution neural network trained on Galaxy
+    morphologies as a feature extractor performs admirably but markedly worse
+    than the citizen scientists.
     Scripts used in the analysis of this paper are freely available at
     \url{https://github.com/cpadavis/strongcnn}. The images are currently only
     available to those who contact the author, but will be available to the
@@ -67,39 +70,40 @@ Andrew McLeod\\
 
 % TODO: insert references!
 
-A consequence of Einstein's Theory of General Relativity is that mass bends the
-path of light. Most of the time the deflections are very small; the original
-'gravitational lens' that tested the veracity of Einstein's theory in the years
-after the first world war was the sun, which deflected light from stars behind
-it only a few seconds of arc. However, when light passes through a particularly
-deep gravitational potential (say, near the center of the dark matter halo of a
-galaxy cluster), the deflections can be particularly large, resulting in
-brilliant arcs and multiple images. These strong deflections due to light
-passing through a deep gravitational potential are termed strong gravitational
-lenses. The gravitational lensing signal can heuristically be thought of as a
-trade off between a couple factors: larger gradients in the gravitational
-potential create larger distortions (and larger gradients in the gravitational
-potential tend to reside near to the center of the foreground galaxy or galaxy
-cluster); the more separated the foreground and background objects are, the
-bigger the proportional distortion on the background object by the foreground
-(but the farther away the background object is, the smaller it
-appears\footnote{Note that this is only true in the ``low redshift'' universe:
-  when objects are farther away than a cosmological redshift of $z \approx 2.5$
-or about 2.5 Gyr after the birth of the Universe, they will actually
-\textit{grow} in angular extent.}).
+A consequence of Einstein's Theory of General Relativity
+is that mass bends the path of light.\cite{Einstein:2007aa} Most of the time the deflections are very
+small; the original 'gravitational lens' that tested the veracity of Einstein's
+theory in the years after the first world war was the sun, which deflected
+light from stars behind it only a few seconds of arc. However, when light
+passes through a particularly deep gravitational potential (say, near the
+center of the dark matter halo of a galaxy cluster), the deflections can be
+particularly large, resulting in brilliant arcs and multiple images. These
+strong deflections due to light passing through a deep gravitational potential
+are termed strong gravitational lenses. The gravitational lensing signal can
+heuristically be thought of as a trade off between a couple factors: larger
+gradients in the gravitational potential create larger distortions (and larger
+gradients in the gravitational potential tend to reside near to the center of
+the foreground galaxy or galaxy cluster); the more separated the foreground and
+background objects are, the bigger the proportional distortion on the
+background object by the foreground (but the farther away the background object
+is, the smaller it appears\footnote{Note that this is only true in the ``low
+  redshift'' universe: when objects are farther away than a cosmological
+  redshift of $z \approx 2.5$ or about 2.5 Gyr after the birth of the Universe,
+they will actually \textit{grow} in angular extent.}).\cite{Kochanek:2006oz}
 
 The very existence of these potentials acts as a verification of the Theory of
 General Relativity, but they can also be used for much more. Strong
 gravitational lenses are one of the few ways to directly probe the distribution
 of dark matter, a particle (or possibly family of particles) that does not emit
 electromagnetic radiation but does have mass and hence interacts
-gravitationally with normal baryonic matter. This allows us to tally the mass
+gravitationally with normal baryonic matter.\cite{Refsdal:1964aa} This allows us to tally the mass
 of the largest gravitationally-bound structures in the universe, galaxy
 clusters, which can give us insight into the formation history of these massive
 objects. In this way, strong gravitational lenses can then tell us something
 about the expansion history of the universe, by setting limits on how massive
 the most massive objects in the universe can be. The properties of the bent
-light itself can also say much about that expansion history. When an object is
+light itself can also say much about that expansion
+history.\cite{Refsdal:1964ab, Kundic:1997aa, Barnacka:2014aa} When an object is
 strongly-lensed into multiple images, each image travels a different span of
 space and time. When an object does not vary much with time, these different
 path lengths have no practical import. However, if the object varies
@@ -122,11 +126,21 @@ team of ten graduate students could expect to spend about 14 years looking at
 these objects. Computer algorithms are not much better: most current machine
 learning algorithms are woefully-underpowered for this task, and generally have
 poor completeness or poor purity -- and often poor both. Additionally, some
-algorithms are better at finding some types of lenses than others; some
-perform well on the brilliant arcs, but poorly on the multiply-imaged objects,
-or vice versa. New algorithms need to be developed to find more strong
-gravitational lenses, and more strong lenses need to be found to power these
-algorithms.
+algorithms are better at finding some types of lenses than others; some perform
+well on the brilliant arcs, but poorly on the multiply-imaged objects, or vice
+versa. For example, \cite{Kubo:2008aa} attempt to fit arc-like features in
+images in order to find strong gravitational lenses, but this means that
+multiply-imaged quasars are completely ignored. \cite{Agnello:2015aa} and
+\cite{Chan:2014aa} in contrast develop an algorithm for finding gravitationally
+lensed quasars based on catalog-level colors and magnitudes, precluding their
+algorithm finding strong gravitational lens arcs. New algorithms need to be
+developed to find more strong gravitational lenses, and more strong lenses need
+to be found to power these algorithms. These algorithms need to not only
+identify potential lenses accurately, but be able to make strong statements
+about their contamination rates, as spectroscopic follow-up can be an expensive
+endeavor. \cite{Momcheva:2015aa} performed spectroscopic follow-up on 9768
+galaxies, finding 28 new strong gravitational lens systems, but taking 40
+nights of telescope time on expensive telescopes.
 
 {\sc Space\,Warps}\xspace (Marshall et. al, in prep.) is a citizen-science
 initiative designed to overcome these two problems. The program has users
@@ -366,36 +380,96 @@ use comes from the fully connected layer.}
 support vector machine classifications perform best on the test dataset,
 however all the feature vectors perform worse than the users themselves. Note
 that the $x$-axis stops at a false positive rate of 0.5, and the $y$-axis
-begins at a true positive rate of 0.5.}
+begins at a true positive rate of 0.5. Truly random guessing (which results in
+a 1:1 relationship between the true positive rate and the false positive rate)
+would not show up on this graph.}
 \label{fig:roc_tl} 
 \end{figure*}
 
-% TODO: Redescribe the network, including data augmentation and such.
-Transfer Learning provides a mechanism by which 
+Transfer Learning relies on the idea that convolution neural networks that
+perform similar tasks pick up similar features, as well as the observation that
+lower levels in neural networks tend to be quite generic in the features they
+pick out. They provide an answer to the scenario when there are too few data to
+effectively train a complex system like deep convolution neural networks: start
+the training of your new system from the results of training a similar system.
+For the scope of this project, we chose to examine the effects of transfer
+learning from galaxy morphology to strong gravitational lens identification. In
+both cases, an input image of a galaxy is fed into the network, and some
+classification is read out. Additionally, both networks need to differentiate
+shapes in the central regions of the galaxy image (for example to find bars in
+spiral galaxies) from outer regions (spiral arms, arcs, multiply-lensed
+systems). The Galaxy Zoo competition provides an ideal candidate for transfer
+learning because of these facts, and also because the image quality is
+comparable between the Sloan Digital Sky Survey (the telescope survey on which
+the Galaxy Zoo images were based) and the CFHTLS survey. We have on hand a
+convolution neural network trained to classify galaxy morphology provided by
+Ryan Keisler \footnote{\url{rkeisler@stanford.edu}}. The architecture of that
+network can be seen in Figure~\ref{fig:ryan_architecture}. We do the simplest
+thing possible: we run the convolution neural network as a feature extractor,
+and take images from the fully connected layer. Thus we transform a
+$96\times96\times3$ image into a 500 feature vector. We then train these
+feature vectors on various classifiers (Random Forest, Support Vector Machine,
+Softmax) and evaluate results against a test set. We distinguish between stage
+1 and stage 2 data because the simulated lenses changed between the two sets.
+The code that produces the feature vectors also augments the data by
+automatically producing feature vectors of flips and rotations of the input
+images. This allows us to increase the size of our input dataset nearly
+20-fold.
+
+We train these datasets on three classifiers: Random Forests (which are an
+ensemble of decision trees trained on the data), Softmax and linear Support
+Vector Machines. We use stochastic gradient descent for the latter two
+classifiers. We create a test dataset by randomly extracting 20 percent of the
+dataset and setting it aside. We also ensure that any data augmentation stays
+in the training or test sets. Our goal with all the above systems is not to
+find the maximal accuracy, but to find some reasonable trade-off between the
+true positive rate and the false positive rate: we want to find as many lenses
+as we can, but we also know that confirmation of these lenses by spectroscopic
+follow-up is an expensive endeavor such that we want to minimize the number of
+non-lenses that make it into our candidate list. Because of this, any potential
+candidate list we would make from any of our classifiers has a relatively hard
+threshold at a false positive rate of 0.2.
+
+The resultant Receiver Operating Curves can be observed in
+Figure~\ref{fig:roc_tl}. In general we find that support vector machines
+perform the best as a classifier on the feature vectors, but that the feature
+vectors perform more poorly than the \textsc{Space Warps} users. We must caveat
+though that \textsc{Space Warps} does not create a validation dataset against
+which to test the performance of the system. Even if we don't perform quite as
+well as the citizen scientists, we consider this a
+promising baseline for future performance by transfer learning: we have not
+even begun to consider potential performance gains by retraining the
+convolution neural network on the \textsc{Space Warps} data.
 
 %-------------------------------------------------------------------------
 \section{Discussion}
 
-
-% TODO: Remake with linear classifiers.
-% TODO: Include results from CNN as well.
-% TODO: Touch up description
-\begin{figure}%[!ht]
-\centering
-\epsfig{file=Figures/roc_curve.pdf,width=\linewidth,angle=0,clip=}
-\caption{Receiver Operating Curves for the Random
-  Forest Transfer Learning and the \textsc{Space Warps} systems, divided by
-  stage.}
-  \label{fig:roc}
-\end{figure}
-
-% TODO: make figure with probability distributions between classifiers and sw
+% Do we need this section?
 
 %-------------------------------------------------------------------------
 \section{Conclusions}
 
 % Discuss how well things went. Or didn't go.
-
+The need for new automated detection algorithms for finding strong
+gravitational lenses will only become more pressing in the next decade, as it
+becomes infeasible for scientists to scan images by eye for such systems. Using
+the \textsc{Space Warps} dataset, we have examined how convolution neural
+networks trained both on this particular dataset and on other datasets can
+perform at the detection task.
+% TODO: brief blurb about our CNN
+We find that features extracted from a convolution neural network trained on
+the classification of galaxy morphology (with a linear support vector
+classifier on top for converting the feature vector to a binary ``lens'' and
+``not-lens'') performs admirably but markedly worse than the citizen scientists
+trained on the dataset. Further work examining improvements by retraining the
+whole neural network could lead to a generic classification machine that takes
+images from \textit{any} galaxy survey and states whether the image contains a
+strong lens or not. Additionally there is much potential in both direct
+convolution neural networks and transfer learning from other networks in
+linking the classification outputs of the networks with the probability
+estimates of the \textsc{Space Warps} system, which also examined several
+thousands more ``unknown'' systems and could lead to more gravitational lenses
+being identified.
 
 %-------------------------------------------------------------------------
 \section{Acknowledgements}
@@ -408,13 +482,7 @@ learning is based was kindly provided to us by Ryan Keisler
 All errors in interpretation or otherwise are entirely our own.
 
 %-------------------------------------------------------------------------
-\section{Intermediate/Preliminary Results}
-
-We have created the cutouts of our images from the catalogs.
-We have begun constructing our own convolutional network with two
-convolutional/max-pool layers and two fully-connected layers. Although we have
-not yet trained on our images, we can load these images and run them
-through our initialized classifier. 
+% References
 
 % TODO: copy relevant bib stuff over so I don't have a 4 mb bib
 {\small
