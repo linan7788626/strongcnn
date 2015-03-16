@@ -208,5 +208,11 @@ for stage in [1, 2]:
 # plt.show()
 
 
+bindir = project_dir + 'binarys/'
+np.save(bindir + 'fpr', fpr)
+np.save(bindir + 'tpr', tpr)
+np.save(bindir + 'cuts', cuts)
+np.save(bindir + 'scores', scores)
+np.save(bindir + 'thresh', thresh)
 
 import ipdb; ipdb.set_trace()
