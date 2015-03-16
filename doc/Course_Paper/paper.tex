@@ -518,8 +518,16 @@ becomes infeasible for scientists to scan images by eye for such systems. Using
 the \textsc{Space Warps} dataset, we have examined how convolution neural
 networks trained both on this particular dataset and on other datasets can
 perform at the detection task.
-% TODO: brief blurb about our CNN
-We find that features extracted from a convolution neural network trained on
+
+While our Convolutional Neural Net trained on just the \textsc{Space Warps} dataset 
+has not yet outperformed citizen-scientists at sufficiently low false positive rates, there is 
+ample reason to believe marked improvements can be made with more time and 
+CPU power. In addition to training on more images (and augmented images) for longer, 
+we can expect to gain a significant reduction in training time by taking advantage of 
+\textsc{theano}'s GPU capabilities and by implementing batch normalization. \cite{Ioffe:2015aa} 
+It may also be beneficial to explore larger and more expressive CNN architectures.
+
+In our application of Transfer Learning, we find that features extracted from a convolution neural network trained on
 the classification of galaxy morphology (with a linear support vector
 classifier on top for converting the feature vector to a binary ``lens'' and
 ``not-lens'') performs admirably but markedly worse than the citizen-scientists
@@ -544,7 +552,6 @@ All errors in interpretation or otherwise are entirely our own.
 %-------------------------------------------------------------------------
 % References
 
-% TODO: copy relevant bib stuff over so I don't have a 4 mb bib
 {\small
 \bibliographystyle{ieee}
 \bibliography{coursebib}
