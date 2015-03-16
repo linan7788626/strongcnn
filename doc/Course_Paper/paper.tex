@@ -80,12 +80,12 @@ center of the dark matter halo of a galaxy cluster), the deflections can be
 particularly large, resulting in brilliant arcs and multiple images. These
 strong deflections due to light passing through a deep gravitational potential
 are termed strong gravitational lenses. The gravitational lensing signal can
-heuristically be thought of as a trade off between a couple factors: larger
+heuristically be thought of as a trade off between a couple of factors: larger
 gradients in the gravitational potential create larger distortions (and larger
 gradients in the gravitational potential tend to reside near to the center of
-the foreground galaxy or galaxy cluster); the more separated the foreground and
+the foreground galaxy or galaxy cluster), while the more separated the foreground and
 background objects are, the bigger the proportional distortion on the
-background object by the foreground (but the farther away the background object
+background object by the foreground (conversely, the farther away the background object
 is, the smaller it appears\footnote{Note that this is only true in the ``low
   redshift'' universe: when objects are farther away than a cosmological
 redshift of $z \approx 2.5$ or about 2.5 Gyr after the birth of the Universe,
@@ -224,16 +224,16 @@ We would like to examine the following questions:
 \section{Technical Approach}
 
 From approximately 12000 fields of $440\times440\times3$ fields, we have
-constructed approximately 30000 cutouts sized $96\times96\times3$. These cutouts
-are selected based on where citizen-scientists clicked, on the theory that both
-'correct' and 'incorrect' selections provide useful information about the
-characteristics of gravitational lenses. In general, we have access to two
-broad classes of images: 'training' and 'test' images. The 'training' images
+constructed approximately 30000 cutouts sized $96\times96\times3$. These
+cutouts are selected based on where citizen-scientists clicked, on the theory
+that both `correct' and `incorrect' selections provide useful information about
+the characteristics of gravitational lenses. In general, we have access to two
+broad classes of images: `training' and `test' images. The `training' images
 include fields that were verified in advance to not contain any lenses as well
 as simulated lensed galaxies, quasars, and clusters. Many of the simulated
 objects are over-exaggerated and extremely obvious, but we also have access to
-a second 'refinement stage' of the project, where much harder simulations were
-given to users. The 'test' images are the fields that citizen-scientists
+a second `refinement stage' of the project, where much harder simulations were
+given to users. The `test' images are the fields that citizen-scientists
 viewed, assessing whether a lens was in the field or not. In these 'test'
 images are 120 known strong gravitational lens systems, which are also included
 in this set. (The project confirms roughly half of these known lenses for
@@ -355,12 +355,41 @@ algorithm.
 %-------------------------------------------------------------------------
 \subsection{Convolution Neural Network}
 
-% TODO: Insert figure for architecture
+\begin{figure}%[!ht]
+\centering
+\epsfig{file=Figures/theano_roc.pdf,width=\linewidth,angle=0,clip=}
+\caption{Receiver Operating Curves extracted from the training and validation sets used with 
+our Convolutional Neural Network after training for 35 epochs. These results should be compared 
+with the \textsc{Space Warps} Stage 1 Receiver Operating Curve in Figure~\ref{fig:roc_tl}, which 
+outperforms our network for false positive rates below $\sim 0.3$. However, above this 
+point our Convolutional Net achieves higher true positive rates than any of the other (machine 
+or human) methods herein considered.}
+\label{fig:roc_theano}
+\end{figure}
+
+
+In order to retain our ability to experiment with non-traditional training methods and 
+architectures, we chose to implement our Convolutional Neural Network (CNN) from the ground 
+up using \textsc{theano}. We settled on a five-layer layer architecture consisting of two 
+convolution/max dropout layers, a fully connected layer, and a softmax layer. Training was 
+carried out using RMSprop with a decay rate of 0.9, and the model was regularized using $L_2$ normalization 
+with a regularization strength of $10^{-4}$ and dropout with probability 0.5 at each layer . We chose our convolution layers to have stride 4 and 
+depth 10 (with padding to maintain the input image size), and the subsequent max pooling layers to have stride 2. Assigning our fully 
+connected layer 50 neurons (and including the paramters in the subsequent softmax layer) gave 
+our model a total of 288,492 trainable parameters.
+
+Due to memory and time constraints, we have not yet trained this CNN on all our of data. The results 
+of training it on 8,000 randomly selected images from the \textsc{Space Warps} Stage 1 data set for 
+35 epochs is shown in Figure~\ref{fig:roc_theano}, where we have plotted the Receiver Operating Curve 
+obtained from our model's predictions on the training set and a test set composed of another (non-overlapping)
+ randomly selected 8,000 images from the \textsc{Space Warps} Stage 1 data set. This result should be easily improved on by training on more of 
+ our images, by adding data augmentation, and by increasing the complexity of our CNN architecture. However, it already shows that training 
+ a CNN solely on the \textsc{Space Warps} data set is a viable option, given enough CPU power and time.
+ 
 
 %-------------------------------------------------------------------------
 \subsection{Transfer Learning}
 
-% TODO: Touch up description
 \begin{figure}%[!ht]
 \centering
 \epsfig{file=Figures/architecture.pdf,width=\linewidth,angle=0,clip=}
@@ -506,12 +535,10 @@ being identified.
 
 %-------------------------------------------------------------------------
 \subsection*{Acknowledgements}
-We received access to the dataset through Phil Marshall
-\footnote{\url{pjm@slac.stanford.edu}}, who also graciously explained to us how
+We received access to the dataset through Phil Marshall\footnote{\url{pjm@slac.stanford.edu}}, who also graciously explained to us how
 \textsc{Space Warps}
 currently works. The convolutional neural network upon which the transfer
-learning is based was kindly provided to us by Ryan Keisler
-\footnote{\url{rkeisler@stanford.edu}}.
+learning is based was kindly provided to us by Ryan Keisler\footnote{\url{rkeisler@stanford.edu}}.
 All errors in interpretation or otherwise are entirely our own.
 
 %-------------------------------------------------------------------------
