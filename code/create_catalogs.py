@@ -3,10 +3,6 @@ File: create_cluster_catalog.py
 Author: Chris Davis
 Description: Given database information, creates the cluster catalog and downloads fields and cutouts.
 
-TODO: test that the cluster finder works as is, and then:
-    - set convert_outliers to False by default (possibly remove it?)
-    - set min_samples to 5 instead of 2
-TODO: change filenaming convention? for augmented at least have it say the cluster_type
 """
 
 from __future__ import print_function, division
@@ -28,8 +24,12 @@ collection_categories = ['ID', 'ZooID', 'location', 'mean_probability', 'categor
 annotation_categories = ['At_X', 'At_Y', 'PD', 'PL', 'ItWas']
 cluster_catalog_labels = ['cluster_id', 'x', 'y', 'num_markers', 'skill_sum', 'tot_markers', 'cluster_marked_looks', 'total_marked_looks', 'total_looks', 'dispersion']
 field_size = 440
-eps = 48
-min_samples = 5#2
+# eps is largely determined by looking at the distribution of dispersion values
+# as well as looking at actual images to get a rough sense of the tradeoff
+# between accidentally misclassifying a large object as multiple and
+# multiple objects as one
+eps = 30#48
+min_samples = 3#2
 stamp_size = 96
 random_state = 1234
 convert_outliers = False#True
@@ -594,7 +594,23 @@ def get_online_png(url, outname, myopener=MyOpener()):
     else:
         # TODO: this is glitched?
         F = [outname]
-    I = imread(F[0]) * 1. / 255
+    try:
+        I = imread(F[0]) * 1. / 255
+    except Exception as er:
+        # this field probably didn't download for *reasons*
+        print(F, url, outname)
+        try:
+            import time
+            time.sleep(10)
+            I = imread(F[0]) * 1. / 255
+        except TypeError as er:
+
+            # okay let's give this another shot
+            from os import remove
+            remove(outname)
+            F = myopener.retrieve(url, outname)
+            I = imread(F[0]) * 1. / 255
+
     return I
 
 
@@ -680,7 +696,7 @@ if __name__ == '__main__':
 
     catalog = create_cluster_catalog_and_cutouts(**cluster_args)
     catalog.to_csv(catalog_path)
-    # TODO: augment catalog
+
     augmented_directory = args['augment']
     if augmented_directory:
         print('create_catalogs: making augmented data!')
