@@ -3,6 +3,7 @@ File: create_cluster_catalog.py
 Author: Chris Davis
 Description: Given database information, creates the cluster catalog and downloads fields and cutouts.
 
+TODO: with sklearn 0.16, randomstate is deprecated and unused. Remove it?
 """
 
 from __future__ import print_function, division
@@ -106,8 +107,9 @@ def augment_image(image):
             augmented_images.append(augmented_image)
     return augmented_images
 
-def create_cluster_catalog_and_cutouts(collection, knownlens,
+def create_cluster_catalog_and_cutouts(collection,
         field_directory, cluster_directory,
+        knownlens=None,
         eps=eps, min_samples=min_samples, random_state=random_state,
         convert_outliers=convert_outliers,
         do_a_few=None):
@@ -119,7 +121,7 @@ def create_cluster_catalog_and_cutouts(collection, knownlens,
         Contains collection_categories and annotation_categories
 
     knownlens : pandas dataframe
-
+        
 
     Returns
     -------
@@ -156,7 +158,6 @@ def create_cluster_catalog_and_cutouts(collection, knownlens,
         field_directory, cluster_directory, stamp_size=stamp_size)
     print('cluster cutouts created!')
 
-    # get cluster_type using alphas and knownlens information
     # alphas
     cluster_types = []
     for cati in catalog.iterrows():
@@ -178,25 +179,27 @@ def create_cluster_catalog_and_cutouts(collection, knownlens,
     print('alphas done')
 
     # knownlens
-    catalog_zooid_index = catalog.index
-    catalog_zooid = catalog.set_index(['ZooID'])
-    catalog_zooid['index'] = catalog_zooid_index
-    for kl in knownlens.iterrows():
-        x = kl[1]['x']
-        y = 440 - kl[1]['y']
-        zooid = kl[1]['ZooID']
-        if zooid in catalog_zooid.index:
-            cci = catalog_zooid.loc[zooid]
-            ccx = cci['x']
-            ccy = cci['y']
-            l2 = np.square(x - ccx) + np.square(y - ccy)
-            if type(l2) == np.float64:
-                index = cci['index']
-                cluster_types[index] = 'known lens'
-            elif type(l2) != np.float64:
-                index = cci['index'][np.argmin(l2.values)]
-                cluster_types[index] = 'known lens'
-    print('known lens done!')
+    # cludgey way to ensure we have the item
+    if type(knownlens) != type(None):
+        catalog_zooid_index = catalog.index
+        catalog_zooid = catalog.set_index(['ZooID'])
+        catalog_zooid['index'] = catalog_zooid_index
+        for kl in knownlens.iterrows():
+            x = kl[1]['x']
+            y = 440 - kl[1]['y']
+            zooid = kl[1]['ZooID']
+            if zooid in catalog_zooid.index:
+                cci = catalog_zooid.loc[zooid]
+                ccx = cci['x']
+                ccy = cci['y']
+                l2 = np.square(x - ccx) + np.square(y - ccy)
+                if type(l2) == np.float64:
+                    index = cci['index']
+                    cluster_types[index] = 'known lens'
+                elif type(l2) != np.float64:
+                    index = cci['index'][np.argmin(l2.values)]
+                    cluster_types[index] = 'known lens'
+        print('known lens done!')
 
     catalog['cluster_type'] = cluster_types
 
@@ -255,7 +258,7 @@ def create_incomplete_cluster_catalog(catalog,
         x = np.array([xi for xj in x_unflat for xi in xj])
         y = np.array([yi for yj in y_unflat for yi in yj])
         did_mark = np.array([True if len(xj) > 0 else False for xj in x_unflat])
-        users = np.array([xj for xj in xrange(len(x_unflat)) 
+        users = np.array([xj for xj in xrange(len(x_unflat))
                           for xi in x_unflat[xj]])
         total_marked_looks = np.sum(did_mark)
         total_looks = len(x_unflat)
@@ -274,9 +277,16 @@ def create_incomplete_cluster_catalog(catalog,
         PD = np.array([PDi for PDj in PD_unflat for PDi in PDj])
         skill = expectedInformationGain(0.5, PL, PD)
 
+        # create weights
+        # if a user clicks multiple times, downweight by that fraction
+        binusers = np.bincount(users)
+        w = 1. / binusers[users]
+
+        # TODO: weight by skill?
+
         # cluster
         cluster_centers, cluster_labels, labels = \
-            outlier_clusters_dbscan(x, y, eps=eps, min_samples=min_samples)
+            outlier_clusters_dbscan(x, y, w=w, eps=eps, min_samples=min_samples)
 
         # add to catalog
         for cluster_label_i, cluster_label in enumerate(cluster_labels):
@@ -483,9 +493,8 @@ def expectedInformationGain(p0, M_ll, M_nn):
 
     return I
 
-def outlier_clusters_dbscan(x, y,
+def outlier_clusters_dbscan(x, y, w=None,
                             eps=eps, min_samples=min_samples,
-                            random_state=random_state,
                             convert_outliers=convert_outliers):
     """
     Parameters
@@ -499,8 +508,6 @@ def outlier_clusters_dbscan(x, y,
     min_samples : int, optional
         The number of samples in a neighborhood for a point to be considered
         as a core point.
-    random_state : numpy.RandomState, optional
-        The generator used to initialize the centers. Defaults to numpy.random.
 
     convert_outliers : binary, optional
         DBSCAN assigns outliers a cluster label -1. This says take each -1 and
@@ -551,8 +558,8 @@ def outlier_clusters_dbscan(x, y,
 
     else:
 
-        clusterer = DBSCAN(eps=eps, min_samples=min_samples, random_state=random_state)
-        db = clusterer.fit(data)
+        clusterer = DBSCAN(eps=eps, min_samples=min_samples)
+        db = clusterer.fit(data, sample_weight=w)
         labels = db.labels_
         cluster_labels = list(set(labels))
         if convert_outliers:
@@ -630,7 +637,8 @@ if __name__ == '__main__':
     parser.add_argument('--knownlens',
                         action='store',
                         dest='knownlens',
-                        help='Path to csv of the knownlens catalog.')
+                        default=None,
+                        help='Path to csv of the knownlens catalog. If none, skips!')
     parser.add_argument('--clusters',
                         action='store',
                         dest='clusters',
@@ -685,7 +693,10 @@ if __name__ == '__main__':
     else:
         raise Exception('create_catalogs: No idea what kind of collection you are giving me here for {0}'.format(collection_path))
 
-    knownlens = pd.read_csv(args['knownlens'])
+    if args['knownlens']:
+        knownlens = pd.read_csv(args['knownlens'])
+    else:
+        knownlens = None
 
     # create the cluster args
     cluster_args = {'collection': collection,
