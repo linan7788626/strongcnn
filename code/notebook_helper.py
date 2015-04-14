@@ -122,4 +122,4 @@ def examine_catalog(catalog):
         print(catalog.groupby(groupby_list).apply(len))
 
     interact(examine_cat,
-             groupby_str="['stage', 'flavor', 'cluster_type']")
+             groupby_str="['stage', 'field_flavor', 'object_flavor']")

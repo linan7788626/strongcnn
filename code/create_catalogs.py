@@ -120,7 +120,6 @@ def create_cluster_catalog_and_cutouts(collection,
         Contains collection_categories and annotation_categories
 
     knownlens : pandas dataframe
-        
 
     Returns
     -------
@@ -200,7 +199,7 @@ def create_cluster_catalog_and_cutouts(collection,
                     cluster_types[index] = 'known lens'
         print('known lens done!')
 
-    catalog['object_type'] = cluster_types
+    catalog['object_flavor'] = cluster_types
 
     return catalog
 
