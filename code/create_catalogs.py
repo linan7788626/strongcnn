@@ -162,7 +162,7 @@ def create_cluster_catalog_and_cutouts(collection,
     for cati in catalog.iterrows():
         cati, entry = cati
         alpha = alphas[cati]
-        field_flavor = entry['flavor']
+        field_flavor = entry['field_flavor']
         if 'lens' in field_flavor:
             if alpha == 1:
                 cluster_type = 'simulated ' + field_flavor
