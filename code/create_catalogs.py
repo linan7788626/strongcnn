@@ -342,7 +342,7 @@ def create_cluster_cutouts(catalog, field_directory, cluster_directory,
     for clusteri in xrange(len(catalog)):
         # define the outputs for the images
         outname_field = field_directory + catalog['field_name'][clusteri]
-        outname_cluster = cluster_directory + catalog['cluster_name'][clusteri]
+        outname_cluster = cluster_directory + catalog['object_name'][clusteri]
 
         # get the centers
         x = catalog['x'][clusteri]
