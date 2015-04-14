@@ -23,7 +23,7 @@ def examine_cutouts_diagnostic(catalog, annotated_catalog, cluster_directory='./
         display(entry[columns])
 
 
-        cluster_path = cluster_directory + entry['cluster_name']
+        cluster_path = cluster_directory + entry['object_name']
 
         cluster = imread(cluster_path) * 1. / 255.
         if invert_color:
@@ -86,17 +86,17 @@ def examine_cutouts(catalog, cluster_directory='./', invert_color=False):
     # some generic things you can configure:
     # what columns we want to plot
 
-    columns = ['ZooID', 'cluster_id', 'stage', 'flavor', 'cluster_type',
-               'status', 'num_markers', 'tot_markers', 'cluster_marked_looks',
-               'total_marked_looks', 'total_looks',
-               'dispersion', 'mean_probability', 'x', 'y']
+    columns = ['ZooID', 'object_id', 'stage', 'field_flavor', 'object_flavor',
+               'status', 'markers_in_object', 'markers_in_field', 'people_marking_objects',
+               'people_marking_field', 'people_looking_at_field',
+               'object_size', 'mean_probability', 'x', 'y']
     def examine_entry(i):
         entry = catalog.iloc[i]
         ZooID = entry['ZooID']
         display(entry[columns])
 
 
-        cluster_path = cluster_directory + entry['cluster_name']
+        cluster_path = cluster_directory + entry['object_name']
 
         cluster = imread(cluster_path) * 1. / 255.
         if invert_color:
