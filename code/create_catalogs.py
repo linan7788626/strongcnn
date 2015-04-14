@@ -3,7 +3,6 @@ File: create_cluster_catalog.py
 Author: Chris Davis
 Description: Given database information, creates the cluster catalog and downloads fields and cutouts.
 
-TODO: with sklearn 0.16, randomstate is deprecated and unused. Remove it?
 """
 
 from __future__ import print_function, division
