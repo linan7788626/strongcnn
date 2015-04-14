@@ -23,7 +23,7 @@ from ast import literal_eval
 
 collection_categories = ['ID', 'ZooID', 'location', 'mean_probability', 'category', 'kind', 'flavor', 'state', 'status', 'truth', 'stage']
 annotation_categories = ['At_X', 'At_Y', 'PD', 'PL', 'ItWas']
-cluster_catalog_labels = ['cluster_id', 'x', 'y', 'num_markers', 'skill_sum', 'tot_markers', 'cluster_marked_looks', 'total_marked_looks', 'total_looks', 'dispersion']
+cluster_catalog_labels = ['object_id', 'x', 'y', 'markers_in_object', 'skill_sum', 'markers_in_field', 'people_marking_objects', 'people_marking_field', 'people_looking_at_field', 'object_size']
 field_size = 440
 # eps is largely determined by looking at the distribution of dispersion values
 # as well as looking at actual images to get a rough sense of the tradeoff
@@ -32,7 +32,6 @@ field_size = 440
 eps = 30#48
 min_samples = 3#2
 stamp_size = 96
-random_state = 1234
 convert_outliers = False#True
 
 # ======================================================================
@@ -66,13 +65,13 @@ def augment_catalog(catalog, cluster_directory, augmented_directory):
     augmented_catalog_columns = list(catalog.columns) + ['stamp_id', 'stamp_name', 'augment_type']
     for cati in catalog.iterrows():
         entry = cati[1]
-        image_path = cluster_directory + entry['cluster_name']
+        image_path = cluster_directory + entry['object_name']
         image = imread(image_path)
         augmented_images = augment_image(image)
         for ai, augmented_image in enumerate(augmented_images):
-            stamp_id = entry['cluster_id'] + len(catalog) * ai
+            stamp_id = entry['object_id'] + len(catalog) * ai
             stamp_name = '{2}_{1}_{0}.png'.format(entry['ZooID'],
-                                                  entry['cluster_id'],
+                                                  entry['object_id'],
                                                   stamp_id)
             augment_type = ai
             augmented_entry = np.append(entry.values,
@@ -110,7 +109,7 @@ def augment_image(image):
 def create_cluster_catalog_and_cutouts(collection,
         field_directory, cluster_directory,
         knownlens=None,
-        eps=eps, min_samples=min_samples, random_state=random_state,
+        eps=eps, min_samples=min_samples,
         convert_outliers=convert_outliers,
         do_a_few=None):
     """Main routine for creating the cluster catalog.
@@ -136,7 +135,7 @@ def create_cluster_catalog_and_cutouts(collection,
     # create cluster catalog from collection
     print('creating incomplete cluster catalog')
     catalog = create_incomplete_cluster_catalog(collection,
-        eps=eps, min_samples=min_samples, random_state=random_state,
+        eps=eps, min_samples=min_samples,
         convert_outliers=convert_outliers,
         do_a_few=do_a_few)
     print('incomplete cluster catalog created!')
@@ -148,9 +147,9 @@ def create_cluster_catalog_and_cutouts(collection,
         entry = cati[1]
         field_names.append('{0}.png'.format(entry['ZooID']))
         cluster_names.append('{1}_{0}.png'.format(entry['ZooID'],
-                                                  entry['cluster_id']))
+                                                  entry['object_id']))
     catalog['field_name'] = field_names
-    catalog['cluster_name'] = cluster_names
+    catalog['object_name'] = cluster_names
 
     # now download and create the cutouts
     # make sure these paths exist!
@@ -201,7 +200,7 @@ def create_cluster_catalog_and_cutouts(collection,
                     cluster_types[index] = 'known lens'
         print('known lens done!')
 
-    catalog['cluster_type'] = cluster_types
+    catalog['object_type'] = cluster_types
 
     return catalog
 
@@ -210,7 +209,6 @@ def create_incomplete_cluster_catalog(catalog,
                                       field_size_x=field_size,
                                       field_size_y=field_size,
                                       eps=eps, min_samples=min_samples,
-                                      random_state=random_state,
                                       convert_outliers=convert_outliers,
                                       do_a_few=None):
     """Creates clustering catalog just based off of swap user clicks.
@@ -330,6 +328,9 @@ def create_incomplete_cluster_catalog(catalog,
             cluster_id += 1
 
     cluster_catalog = pd.DataFrame(cluster_catalog, columns=collection_categories + cluster_catalog_labels)
+
+    # we now rename one of the cluster_catalog columns
+    cluster_catalog.rename(columns={'flavor': 'field_flavor'}, inplace=True)
 
     return cluster_catalog
 

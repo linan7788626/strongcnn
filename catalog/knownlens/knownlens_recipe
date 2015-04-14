@@ -1,0 +1,15 @@
+if Y is knownlensID
+and if X is listfiles_d1_d11.txt
+
+
+X2 = X[X['CFHTID'].isin(Y['CFHTID'])]  # cuts down to like 212 entries.
+
+In [114]: ZooID = []
+
+In [115]: for i in range(len(Y)):
+    ZooID.append(X2['ZooID'][X2['CFHTID'] == Y['CFHTID'][i]].values[0])
+
+Y['ZooID'] = ZooID
+
+# note: multiple lenses in a couple ZooIDs; Y is len 227 while X is len 212
+
