@@ -399,6 +399,23 @@ def create_cluster_cutouts(catalog, field_directory, cluster_directory,
 
     return alphas
 
+def create_knownlens_catalog(knownlens_dir = '/nfs/slac/g/ki/ki18/cpd/code/strongcnn/catalog/knownlens/'):
+    knownlensID = pd.read_csv(knownlens_dir + 'knownlensID', sep=' ')
+    listfiles_d1_d11 = pd.read_csv(knownlens_dir + 'listfiles_d1_d11.txt', sep=' ')
+    knownlenspath = knownlens_dir + 'knownlens.csv'
+
+    X2 = listfiles_d1_d11[listfiles_d1_d11['CFHTID'].isin(knownlensID['CFHTID'])]  # cuts down to like 212 entries.
+
+    ZooID = []
+
+    for i in range(len(Y)):
+        ZooID.append(X2['ZooID'][X2['CFHTID'] == knownlensID['CFHTID'][i]].values[0])
+
+    knownlensID['ZooID'] = ZooID
+    knownlensID.to_csv(knownlenspath)
+
+    return knownlensID
+
 def convert_swap_collection_to_dataframe(collection, stage,
         collection_categories=collection_categories,
         annotation_categories=annotation_categories):

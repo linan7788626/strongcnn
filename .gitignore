@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+# images in the catalog folders
+catalog/**/*.jpg
+catalog/**/*.png
+
 # junk
 core.*
 
