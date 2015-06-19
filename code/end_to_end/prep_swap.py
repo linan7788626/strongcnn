@@ -2,7 +2,6 @@ import numpy as np
 import ipdb
 
 def main():
-    preprocess_training_images()
     make_train_and_val_listfiles()
 
 def make_train_and_val_listfiles(frac_val=0.2):
