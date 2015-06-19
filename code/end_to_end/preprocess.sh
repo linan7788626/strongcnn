@@ -3,17 +3,20 @@
 # change to the directory
 cd /home/cpd/Projects/strongcnn/catalog/
 
-## download catalogs
-#wget http://slac.stanford.edu/cpd/galzoo.tar
-#wget http://slac.stanford.edu/cpd/swap_catalog.tar
-#
-#tar xvf galzoo.tar
-#unzip 'galzoo/*.zip'
-#rm galzoo/*.zip
-#tar xvf swap_catalog.tar
+# download catalogs
+wget http://slac.stanford.edu/cpd/galzoo.tar
+wget http://slac.stanford.edu/cpd/swap_catalog.tar
+
+tar xvf galzoo.tar
+unzip 'galzoo/*.zip'
+rm galzoo/*.zip
+tar xvf swap_catalog.tar
 
 # set up data
 mkdir caffe_data
+
+# load up the caffe code and such
+myml
 
 # galzoo
 python /home/cpd/Projects/strongcnn/code/end_to_end/prep_galzoo.py
