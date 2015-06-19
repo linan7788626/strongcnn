@@ -12,8 +12,8 @@ def make_train_and_val_listfiles(frac_val=0.2):
 
     df_not = df[(df.object_flavor == 'DUD')]
     df_lens = df[(df.object_flavor != 'DUD') & (df.object_flavor != 'UNKNOWN')]
-    filenames_not = df_not.cutoutname.values
-    filenames_lens = df_lens.cutoutname.values
+    filenames_not = df_not.object_name.values
+    filenames_lens = df_lens.object_name.values
     filenames = np.concatenate([filenames_not, filenames_lens])
     labels = np.concatenate([np.zeros(len(filenames_not)), np.ones(len(filenames_lens))])
     ind = np.arange(len(filenames))
