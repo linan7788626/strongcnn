@@ -34,7 +34,7 @@ def make_train_and_val_listfiles(frac_val=0.2):
 
 def load_labels():
     from pandas.io.parsers import read_csv
-    df = read_csv('cutout_catalog/cluster_catalog.csv') #, index_col='cutoutname')
+    df = read_csv('cutout_catalog/catalog.csv') #, index_col='cutoutname')
     return df
 
 
