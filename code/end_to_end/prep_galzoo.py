@@ -90,10 +90,10 @@ def preprocess_training_images(savedir='caffe_data/galzoo_processed/'):
 
 
 def preprocess3band(filename, ds=4., mask_strength=None):
-    from scipy.misc import imread
+    from PIL import Image
     from scipy.ndimage.filters import gaussian_filter
     # Open image file.
-    x = imread(filename).astype(np.float)
+    x = np.array(Image.open(filename), dtype=np.float)
     # Gaussian smooth with FWHM = DS pixels.
     for i in range(3):
         x[:,:,i] = gaussian_filter(x[:,:,i], 1.*ds/2.355)
